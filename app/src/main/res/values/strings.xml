@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Let\'s dive</string>
+    <string name="diary_header">Ваш дневник аквалангиста</string>
+    <string name="map">Карта</string>
+    <string name="diary">Дневник</string>
+    <string name="textbook">Учебник</string>
 </resources>
