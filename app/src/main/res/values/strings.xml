@@ -4,4 +4,15 @@
     <string name="map">Карта</string>
     <string name="diary">Дневник</string>
     <string name="textbook">Учебник</string>
+    <string name="profile">Профиль</string>
+    <string name="login_hint">Введите логин</string>
+    <string name="password_hint">Введите пароль</string>
+
+    <string name="title_init">Добро пожаловать</string>
+    <string name="button_init">Далее</string>
+
+    <string name="title_user_exist">Войдём в аккаунт</string>
+    <string name="title_user_new">Создадим аккаунт</string>
+    <string name="button_user_exist">Войти</string>
+    <string name="button_user_new">Зарегистрироваться</string>
 </resources>

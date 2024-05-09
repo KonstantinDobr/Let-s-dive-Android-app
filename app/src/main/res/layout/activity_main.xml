@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="13"
-        android:name="com.example.letsdive.fragment.MapFragment"/>
+        android:name="com.example.letsdive.main_fragments.ProfileFragment"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -18,7 +18,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         app:menu="@menu/bottom_navigation_menu"
-        app:backgroundTint="@color/bottom_navigation_bar"
+        app:backgroundTint="@color/button"
         app:itemIconSize="50dp"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
