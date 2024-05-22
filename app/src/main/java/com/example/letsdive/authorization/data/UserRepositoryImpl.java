@@ -18,6 +18,7 @@ import com.example.letsdive.authorization.domain.sign.SignUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import retrofit2.Call;
@@ -65,7 +66,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         return new FullUserEntity(
                                 resultId,
                                 username,
-                                user.photoUrl
+                                user.photoUrl,
+                                user.records
                         );
                     } else {
                         return null;
@@ -73,6 +75,14 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                 }
         ));
 
+    }
+
+    @Override
+    public void updateUser(@NonNull String id, @NonNull String username, @NonNull String photoUrl, @NonNull Set<Long> records, @NonNull Consumer<Status<Void>> callback) {
+        userApi.update(id, new UserDto(id, username, photoUrl, records)).enqueue(new CallToConsumer<>(
+                callback,
+                dto -> null
+        ));
     }
 
     @Override
@@ -104,7 +114,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         return new FullUserEntity(
                                 resultId,
                                 username_login,
-                                user.photoUrl
+                                user.photoUrl,
+                                user.records
                         );
                     } else {
                         return null;

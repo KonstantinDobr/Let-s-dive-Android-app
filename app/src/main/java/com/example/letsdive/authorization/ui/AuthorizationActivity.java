@@ -56,8 +56,9 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
                             .add(R.id.root, new MapFragment())
                             .commit();
                 } else if (id == R.id.item_diary) {
+                    DiaryFragment fragment = new DiaryFragment(user);
                     fragmentManager.beginTransaction()
-                            .add(R.id.root, new DiaryFragment())
+                            .add(R.id.root, fragment)
                             .commit();
                 } else if (id == R.id.item_textbook) {
                     fragmentManager.beginTransaction()

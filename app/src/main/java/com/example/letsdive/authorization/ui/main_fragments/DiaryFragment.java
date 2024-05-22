@@ -12,6 +12,11 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
 import com.example.letsdive.R;
+import com.example.letsdive.authorization.data.RecordRepositoryImpl;
+import com.example.letsdive.authorization.data.UserRepositoryImpl;
+import com.example.letsdive.authorization.domain.UpdateUserUseCase;
+import com.example.letsdive.authorization.domain.entities.FullUserEntity;
+import com.example.letsdive.authorization.domain.record.AddRecordUseCase;
 import com.example.letsdive.authorization.ui.util_fragments.TimePickerFragment;
 import com.example.letsdive.databinding.FragmentDiaryBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -23,14 +28,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 public class DiaryFragment extends Fragment {
 
     private FragmentDiaryBinding binding;
 
-    public DiaryFragment() {
+    private final FullUserEntity user;
+
+    public DiaryFragment(FullUserEntity user) {
         super(R.layout.fragment_diary);
+        this.user = user;
     }
+
+    public final UpdateUserUseCase updateUserUseCase = new UpdateUserUseCase(
+            UserRepositoryImpl.getInstance()
+    );
+    public final AddRecordUseCase addRecordUseCase = new AddRecordUseCase(
+            RecordRepositoryImpl.getInstance()
+    );
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -54,6 +70,15 @@ public class DiaryFragment extends Fragment {
             public void onPositiveButtonClick(Long aLong) {
                 String date = new SimpleDateFormat("MM-dd-yyy", Locale.getDefault()).format(new Date(aLong));
                 binding.tvDiaryHeader.setText(MessageFormat.format("Selected Date: {0}", date));
+                addRecordUseCase.execute(
+                        "abacaba",
+                        date,
+                        "abacaba",
+                        "abacaba",
+                        10,
+                        status -> {
+
+                        });
             }
         });
     }

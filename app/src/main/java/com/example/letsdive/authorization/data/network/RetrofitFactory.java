@@ -1,6 +1,7 @@
 package com.example.letsdive.authorization.data.network;
 
 import com.example.letsdive.authorization.data.source.CredentialsDataSource;
+import com.example.letsdive.authorization.data.source.RecordApi;
 import com.example.letsdive.authorization.data.source.UserApi;
 
 import okhttp3.OkHttpClient;
@@ -45,5 +46,9 @@ public class RetrofitFactory {
 
     public UserApi getUserApi() {
         return retrofit.create(UserApi.class);
+    }
+
+    public RecordApi getRecordApi() {
+        return retrofit.create(RecordApi.class);
     }
 }
