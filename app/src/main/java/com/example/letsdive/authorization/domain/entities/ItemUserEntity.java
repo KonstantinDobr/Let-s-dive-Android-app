@@ -7,11 +7,11 @@ public class ItemUserEntity {
     private final String id;
 
     @NonNull
-    private final String name;
+    private final String username;
 
-    public ItemUserEntity(@NonNull String id, @NonNull String name) {
+    public ItemUserEntity(@NonNull String id, @NonNull String username) {
         this.id = id;
-        this.name = name;
+        this.username = username;
     }
 
     @NonNull
@@ -20,8 +20,8 @@ public class ItemUserEntity {
     }
 
     @NonNull
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 }
 

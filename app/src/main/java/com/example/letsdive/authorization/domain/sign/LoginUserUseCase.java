@@ -2,6 +2,7 @@ package com.example.letsdive.authorization.domain.sign;
 
 import androidx.annotation.NonNull;
 
+import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.entities.Status;
 
 import java.util.function.Consumer;
@@ -14,11 +15,11 @@ public class LoginUserUseCase {
     }
 
     public void execute(
-            @NonNull String login,
+            @NonNull String username,
             @NonNull String password,
-            Consumer<Status<Void>> callback
+            Consumer<Status<FullUserEntity>> callback
     ) {
-        repo.login(login, password, (status) -> {
+        repo.login(username, password, (status) -> {
             if (status.getStatusCode() != 200) repo.logout();
             callback.accept(status);
         });

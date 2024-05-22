@@ -1,4 +1,4 @@
-package com.example.letsdive.main_fragments;
+package com.example.letsdive.authorization.ui.main_fragments;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,20 +8,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.letsdive.R;
-import com.example.letsdive.databinding.FragmentDiaryBinding;
+import com.example.letsdive.databinding.FragmentMapBinding;
 
-public class DiaryFragment extends Fragment {
+public class MapFragment extends Fragment {
 
-    private FragmentDiaryBinding binding;
+    private FragmentMapBinding binding;
 
-    public DiaryFragment() {
-        super(R.layout.fragment_diary);
+    public MapFragment() {
+        super(R.layout.fragment_map);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding = FragmentDiaryBinding.bind(view);
+        binding = FragmentMapBinding.bind(view);
     }
 
     @Override

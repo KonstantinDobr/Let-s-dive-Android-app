@@ -13,8 +13,8 @@ public class IsUserExistUseCase {
         this.repo = repo;
     }
 
-    public void execute(@NonNull String login, Consumer<Status<Boolean>> callback) {
-        repo.isExistUser(login, status -> {
+    public void execute(@NonNull String username, Consumer<Status<Boolean>> callback) {
+        repo.isExistUser(username, status -> {
             boolean isAvailable = status.getStatusCode() == 200 || status.getStatusCode() == 404;
             callback.accept(
                     new Status<>(

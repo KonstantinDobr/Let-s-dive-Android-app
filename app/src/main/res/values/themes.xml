@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.LetsDive" parent="Base.Theme.LetsDive" />
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/time</item>
+        <item name="colorPrimaryDark">@color/time</item>
+        <item name="colorAccent">@color/time</item>
+    </style>
 </resources>

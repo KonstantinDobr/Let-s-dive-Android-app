@@ -14,11 +14,11 @@ public class CreateUserUseCase {
     }
 
     public void execute(
-            @NonNull String login,
+            @NonNull String username,
             @NonNull String password,
             Consumer<Status<Void>> callback
     ) {
-        repo.createAccount(login, password, callback);
+        repo.createAccount(username, password, callback);
     }
 }
 

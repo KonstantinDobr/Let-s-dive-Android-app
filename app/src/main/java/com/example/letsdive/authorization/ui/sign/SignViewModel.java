@@ -1,5 +1,10 @@
 package com.example.letsdive.authorization.ui.sign;
 
+import static java.security.AccessController.getContext;
+
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -9,12 +14,18 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.letsdive.R;
 import com.example.letsdive.authorization.data.UserRepositoryImpl;
+import com.example.letsdive.authorization.data.dto.UserDto;
+import com.example.letsdive.authorization.domain.GetUserByIdUseCase;
+import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.sign.CreateUserUseCase;
 import com.example.letsdive.authorization.domain.sign.IsUserExistUseCase;
 import com.example.letsdive.authorization.domain.sign.LoginUserUseCase;
 
-public class SignViewModel extends ViewModel {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+public class SignViewModel extends ViewModel {
     private final State INIT_STATE = new State(R.string.title_init, R.string.button_init, false);
     private final MutableLiveData<State> mutableStateLiveData = new MutableLiveData<>(
             INIT_STATE
@@ -24,8 +35,8 @@ public class SignViewModel extends ViewModel {
     private final MutableLiveData<String> mutableErrorLiveData = new MutableLiveData<>();
     public final LiveData<String> errorLiveData = mutableErrorLiveData;
 
-    private final MutableLiveData<Void> mutableOpenLiveData = new MutableLiveData<>();
-    public final LiveData<Void> openLiveData = mutableOpenLiveData;
+    private final MutableLiveData<FullUserEntity> mutableOpenLiveData = new MutableLiveData<>();
+    public final LiveData<FullUserEntity> openLiveData = mutableOpenLiveData;
 
     /* UseCases */
     private final IsUserExistUseCase isUserExistUseCase = new IsUserExistUseCase(
@@ -40,15 +51,15 @@ public class SignViewModel extends ViewModel {
     /* UseCases */
 
     @Nullable
-    private String login = null;
+    private String username = null;
     @Nullable
     private String password = null;
 
     private boolean userCheckCompleted = false;
     private boolean isNewAccount = false;
 
-    public void changeLogin(@NonNull String login) {
-        this.login = login;
+    public void changeLogin(@NonNull String username) {
+        this.username = username;
         if (userCheckCompleted) {
             userCheckCompleted = false;
             mutableStateLiveData.postValue(INIT_STATE);
@@ -69,33 +80,33 @@ public class SignViewModel extends ViewModel {
     }
 
     private void checkAuth() {
-        final String currentLogin = login;
+        final String currentUsername = username;
         final String currentPassword = password;
         if (currentPassword == null || currentPassword.isEmpty()) {
             mutableErrorLiveData.postValue("Password cannot be null");
             return;
         }
-        if (currentLogin == null || currentLogin.isEmpty()) {
+        if (currentUsername == null || currentUsername.isEmpty()) {
             mutableErrorLiveData.postValue("Login cannot be null");
             return;
         }
         if (isNewAccount) {
-            createUserUseCase.execute(currentLogin, currentPassword, status -> {
+            createUserUseCase.execute(currentUsername, currentPassword, status -> {
                 if (status.getStatusCode() == 200 && status.getErrors() == null) {
-                    loginUser(currentLogin, currentPassword);
+                    loginUser(currentUsername, currentPassword);
                 } else {
                     mutableErrorLiveData.postValue("Something wrong");
                 }
             });
         } else {
-            loginUser(currentLogin, currentPassword);
+            loginUser(currentUsername, currentPassword);
         }
     }
 
-    private void loginUser(@NonNull final String currentLogin,@NonNull final String currentPassword) {
-        loginUserUseCase.execute(currentLogin, currentPassword, status -> {
+    private void loginUser(@NonNull final String currentUsername ,@NonNull final String currentPassword) {
+        loginUserUseCase.execute(currentUsername, currentPassword, status -> {
             if (status.getStatusCode() == 200 && status.getErrors() == null) {
-                mutableOpenLiveData.postValue(null);
+                mutableOpenLiveData.postValue(status.getValue());
             } else {
                 mutableErrorLiveData.postValue("Something wrong");
             }
@@ -103,12 +114,12 @@ public class SignViewModel extends ViewModel {
     }
 
     private void checkUserExist() {
-        final String currentLogin = login;
-        if (currentLogin == null || currentLogin.isEmpty()) {
+        final String currentUsername = username;
+        if (currentUsername == null || currentUsername.isEmpty()) {
             mutableErrorLiveData.postValue("Login cannot be null");
             return;
         }
-        isUserExistUseCase.execute(currentLogin, status -> {
+        isUserExistUseCase.execute(currentUsername, status -> {
             if (status.getValue() == null || status.getErrors() != null) {
                 mutableErrorLiveData.postValue("Something wrong. Try later =(");
                 return;

@@ -10,11 +10,8 @@ public class UserDto {
     public String id;
     @Nullable
     @SerializedName("username")
-    public String name;
+    public String username;
     @Nullable
     @SerializedName("photoUrl")
     public String photoUrl;
-    @Nullable
-    @SerializedName("email")
-    public String email;
 }

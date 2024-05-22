@@ -1,8 +1,13 @@
 package com.example.letsdive.authorization.ui.sign;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,16 +17,29 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.letsdive.R;
+import com.example.letsdive.authorization.domain.entities.FullUserEntity;
+import com.example.letsdive.authorization.ui.Postman;
+import com.example.letsdive.authorization.ui.main_fragments.ProfileFragment;
 import com.example.letsdive.authorization.ui.utils.OnChangeText;
 import com.example.letsdive.authorization.ui.utils.Utils;
 import com.example.letsdive.databinding.FragmentSignBinding;
 
-public class SignFragment extends Fragment {
+public class SignFragment extends Fragment implements Postman {
 
     private FragmentSignBinding binding;
     private SignViewModel viewModel;
     public SignFragment() {
         super(R.layout.fragment_sign);
+    }
+
+    Activity activity;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof Activity) {
+            activity = (Activity) context;
+        }
     }
 
     @Override
@@ -56,10 +74,18 @@ public class SignFragment extends Fragment {
             binding.title.setText(state.getTitle());
             binding.password.setVisibility(Utils.visibleOrGone(state.isPasswordEnabled()));
         });
-        viewModel.openLiveData.observe(getViewLifecycleOwner(), (unused) -> {
+        viewModel.openLiveData.observe(getViewLifecycleOwner(), user -> {
             final View view = getView();
             if (view == null) return;
-            Navigation.findNavController(view).navigate(R.id.action_signFragment_to_mainActivity);
+
+//            Log.d("ABACABA", user.getUsername());
+
+            ((Postman) activity).fragmentMail(user);
+            ProfileFragment fragment = new ProfileFragment(user);
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.root, fragment, "fromSign")
+                            .addToBackStack(null)
+                                    .commit();
         });
     }
 
@@ -67,5 +93,10 @@ public class SignFragment extends Fragment {
     public void onDestroyView() {
         binding = null;
         super.onDestroyView();
+    }
+
+    @Override
+    public void fragmentMail(FullUserEntity user) {
+
     }
 }

@@ -17,9 +17,9 @@ public interface UserApi {
     @GET("server/v1/user/{id}")
     Call<UserDto> getById(@Path("id") String id);
     @GET("/server/v1/user/username/{username}")
-    Call<Void> isExist(@Path("username") String login);
+    Call<Void> isExist(@Path("username") String username);
     @POST("server/v1/user/register")
     Call<Void> register(@Body AccountDto dto);
     @GET("server/v1/user/login")
-    Call<Void> login();
+    Call<UserDto> login();
 }

@@ -25,8 +25,8 @@ public class CredentialsDataSource {
         return authData;
     }
 
-    public void updateLogin(@NonNull String login, @NonNull String password) {
-        authData = Credentials.basic(login, password);
+    public void updateLogin(@NonNull String username, @NonNull String password) {
+        authData = Credentials.basic(username, password);
     }
 
     public void logout() {

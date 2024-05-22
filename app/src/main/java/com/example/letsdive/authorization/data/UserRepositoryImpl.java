@@ -1,5 +1,7 @@
 package com.example.letsdive.authorization.data;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.letsdive.authorization.data.dto.AccountDto;
@@ -17,6 +19,8 @@ import com.example.letsdive.authorization.domain.sign.SignUserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import retrofit2.Call;
 
 public class UserRepositoryImpl implements UserRepository, SignUserRepository {
     private static UserRepositoryImpl INSTANCE;
@@ -40,9 +44,9 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                     ArrayList<ItemUserEntity> result = new ArrayList<>(usersDto.size());
                     for (UserDto user : usersDto) {
                         final String id = user.id;
-                        final String name = user.name;
-                        if (id != null && name != null) {
-                            result.add(new ItemUserEntity(id, name));
+                        final String username = user.username;
+                        if (id != null && username != null) {
+                            result.add(new ItemUserEntity(id, username));
                         }
                     }
                     return result;
@@ -56,13 +60,12 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                 callback,
                 user -> {
                     final String resultId = user.id;
-                    final String name = user.name;
-                    if (resultId != null && name != null) {
+                    final String username = user.username;
+                    if (resultId != null && username != null) {
                         return new FullUserEntity(
                                 resultId,
-                                name,
-                                user.photoUrl,
-                                user.email
+                                username,
+                                user.photoUrl
                         );
                     } else {
                         return null;
@@ -73,28 +76,40 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
     }
 
     @Override
-    public void isExistUser(@NonNull String login, Consumer<Status<Void>> callback) {
-        userApi.isExist(login).enqueue(new CallToConsumer<>(
+    public void isExistUser(@NonNull String username, Consumer<Status<Void>> callback) {
+        userApi.isExist(username).enqueue(new CallToConsumer<>(
                 callback,
                 dto -> null
         ));
     }
 
     @Override
-    public void createAccount(@NonNull String login, @NonNull String password, Consumer<Status<Void>> callback) {
-        userApi.register(new AccountDto(login, password)).enqueue(new CallToConsumer<>(
+    public void createAccount(@NonNull String username, @NonNull String password, Consumer<Status<Void>> callback) {
+        userApi.register(new AccountDto(username, password)).enqueue(new CallToConsumer<>(
                 callback,
                 dto -> null
         ));
     }
 
     @Override
-    public void login(@NonNull String login, @NonNull String password, Consumer<Status<Void>> callback) {
-        credentialsDataSource.updateLogin(login, password);
+    public void login(@NonNull String username, @NonNull String password, Consumer<Status<FullUserEntity>> callback) {
+        credentialsDataSource.updateLogin(username, password);
         userApi = RetrofitFactory.getInstance().getUserApi();
         userApi.login().enqueue(new CallToConsumer<>(
                 callback,
-                dto -> null
+                user -> {
+                    final String resultId = user.id;
+                    final String username_login = user.username;
+                    if (resultId != null && username_login != null) {
+                        return new FullUserEntity(
+                                resultId,
+                                username_login,
+                                user.photoUrl
+                        );
+                    } else {
+                        return null;
+                    }
+                }
         ));
     }
 

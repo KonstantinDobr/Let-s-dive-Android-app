@@ -3,45 +3,45 @@ package com.example.letsdive.authorization.domain.entities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class FullUserEntity {
+import java.io.Serializable;
+
+public class FullUserEntity implements Serializable {
     @NonNull
     private final String id;
     @NonNull
-    private final String name;
+    private final String username;
     @Nullable
     private final String photoUrl;
-    @Nullable
-    private final String email;
 
     public FullUserEntity(
             @NonNull String id,
-            @NonNull String name,
-            @Nullable String photoUrl,
-            @Nullable String email
+            @NonNull String username,
+            @Nullable String photoUrl
     ) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.photoUrl = photoUrl;
-        this.email = email;
     }
 
     @NonNull
     public String getId() {
         return id;
     }
-
     @NonNull
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
-
     @Nullable
     public String getPhotoUrl() {
         return photoUrl;
     }
 
-    @Nullable
-    public String getEmail() {
-        return email;
+    @Override
+    public String toString() {
+        return "FullUserEntity{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
+                '}';
     }
 }

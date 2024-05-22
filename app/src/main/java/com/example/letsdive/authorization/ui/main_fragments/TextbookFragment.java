@@ -1,4 +1,4 @@
-package com.example.letsdive.main_fragments;
+package com.example.letsdive.authorization.ui.main_fragments;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,20 +8,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.letsdive.R;
-import com.example.letsdive.databinding.FragmentProfileBinding;
+import com.example.letsdive.databinding.FragmentTextbookBinding;
 
-public class ProfileFragment extends Fragment {
+public class TextbookFragment extends Fragment {
 
-    private FragmentProfileBinding binding;
+    private FragmentTextbookBinding binding;
 
-    public ProfileFragment() {
-        super(R.layout.fragment_profile);
+    public TextbookFragment() {
+        super(R.layout.fragment_textbook);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding = FragmentProfileBinding.bind(view);
+        binding = FragmentTextbookBinding.bind(view);
     }
 
     @Override

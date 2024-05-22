@@ -10,11 +10,11 @@
         android:label="SignFragment"
         tools:layout="@layout/fragment_sign" >
         <action
-            android:id="@+id/action_signFragment_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            android:id="@+id/action_signFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.letsdive.MainActivity"
-        android:label="MainActivity" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.letsdive.authorization.ui.main_fragments.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>
