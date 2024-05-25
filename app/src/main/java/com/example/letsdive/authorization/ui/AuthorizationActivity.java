@@ -37,6 +37,7 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
         setContentView(binding.getRoot());
 
         fragmentManager = getSupportFragmentManager();
+        getWindow().setStatusBarColor(getColor(R.color.background_color));
 
         binding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
 
@@ -49,19 +50,20 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
                 } else if (id == R.id.item_profile) {
                     ProfileFragment fragment = new ProfileFragment(user);
                     fragmentManager.beginTransaction()
-                            .add(R.id.root, fragment)
+                            .replace(R.id.root, fragment)
                             .commit();
                 } else if (id == R.id.item_map) {
                     fragmentManager.beginTransaction()
-                            .add(R.id.root, new MapFragment())
+                            .replace(R.id.root, new MapFragment())
                             .commit();
                 } else if (id == R.id.item_diary) {
+                    DiaryFragment fragment = new DiaryFragment(user);
                     fragmentManager.beginTransaction()
-                            .add(R.id.root, new DiaryFragment())
+                            .replace(R.id.root, fragment)
                             .commit();
                 } else if (id == R.id.item_textbook) {
                     fragmentManager.beginTransaction()
-                            .add(R.id.root, new TextbookFragment())
+                            .replace(R.id.root, new TextbookFragment())
                             .commit();
                 }
                 return true;

@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.letsdive.authorization.data.dto.AccountDto;
+import com.example.letsdive.authorization.data.dto.RecordDto;
 import com.example.letsdive.authorization.data.dto.UserDto;
 import com.example.letsdive.authorization.data.network.RetrofitFactory;
 import com.example.letsdive.authorization.data.source.CredentialsDataSource;
@@ -13,11 +14,14 @@ import com.example.letsdive.authorization.data.utils.CallToConsumer;
 import com.example.letsdive.authorization.domain.UserRepository;
 import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.entities.ItemUserEntity;
+import com.example.letsdive.authorization.domain.entities.RecordEntity;
 import com.example.letsdive.authorization.domain.entities.Status;
 import com.example.letsdive.authorization.domain.sign.SignUserRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import retrofit2.Call;
@@ -61,11 +65,38 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                 user -> {
                     final String resultId = user.id;
                     final String username = user.username;
+
+                    Set<RecordEntity> result = new HashSet<>(user.records.size());
+                    for (RecordDto recordDto : user.records) {
+                        final String recordId = recordDto.id;
+                        final String placeName = recordDto.placeName;
+                        final String date = recordDto.date;
+                        final String startDate = recordDto.startDate;
+                        final String endDate = recordDto.endDate;
+                        if (
+                                recordId != null &&
+                                        placeName != null &&
+                                        date != null &&
+                                        startDate != null &&
+                                        endDate != null
+                        ) {
+                            result.add(new RecordEntity(
+                                    recordId,
+                                    placeName,
+                                    date,
+                                    startDate,
+                                    endDate,
+                                    recordDto.depth
+                            ));
+                        }
+                    }
+
                     if (resultId != null && username != null) {
                         return new FullUserEntity(
                                 resultId,
                                 username,
-                                user.photoUrl
+                                user.photoUrl,
+                                result
                         );
                     } else {
                         return null;
@@ -73,6 +104,54 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                 }
         ));
 
+    }
+
+    @Override
+    public void addRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<FullUserEntity>> callback) {
+        userApi.addRecord(userId, recordId).enqueue(new CallToConsumer<>(
+                callback,
+                user -> {
+                    final String resultId = user.id;
+                    final String username_login = user.username;
+                    if (resultId != null && username_login != null) {
+
+                        Set<RecordEntity> result = new HashSet<>(user.records.size());
+                        for (RecordDto recordDto : user.records) {
+                            final String listRecordId = recordDto.id;
+                            final String placeName = recordDto.placeName;
+                            final String date = recordDto.date;
+                            final String startDate = recordDto.startDate;
+                            final String endDate = recordDto.endDate;
+                            if (
+                                    listRecordId != null &&
+                                            placeName != null &&
+                                            date != null &&
+                                            startDate != null &&
+                                            endDate != null
+                            ) {
+                                result.add(new RecordEntity(
+                                        listRecordId,
+                                        placeName,
+                                        date,
+                                        startDate,
+                                        endDate,
+                                        recordDto.depth
+                                ));
+                            }
+                        }
+
+
+                        return new FullUserEntity(
+                                resultId,
+                                username_login,
+                                user.photoUrl,
+                                result
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+        ));
     }
 
     @Override
@@ -98,13 +177,41 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
         userApi.login().enqueue(new CallToConsumer<>(
                 callback,
                 user -> {
+                    if (user == null) return null;
                     final String resultId = user.id;
                     final String username_login = user.username;
+
+                    Set<RecordEntity> result = new HashSet<>(user.records.size());
+                    for (RecordDto recordDto : user.records) {
+                        final String recordId = recordDto.id;
+                        final String placeName = recordDto.placeName;
+                        final String date = recordDto.date;
+                        final String startDate = recordDto.startDate;
+                        final String endDate = recordDto.endDate;
+                        if (
+                                recordId != null &&
+                                        placeName != null &&
+                                        date != null &&
+                                        startDate != null &&
+                                        endDate != null
+                        ) {
+                            result.add(new RecordEntity(
+                                    recordId,
+                                    placeName,
+                                    date,
+                                    startDate,
+                                    endDate,
+                                    recordDto.depth
+                            ));
+                        }
+                    }
+
                     if (resultId != null && username_login != null) {
                         return new FullUserEntity(
                                 resultId,
                                 username_login,
-                                user.photoUrl
+                                user.photoUrl,
+                                result
                         );
                     } else {
                         return null;

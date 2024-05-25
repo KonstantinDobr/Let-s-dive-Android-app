@@ -53,4 +53,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.picasso)
     runtimeOnly(libs.material.v130alpha02)
+
+    implementation(libs.core)
+//    implementation('com.maxkeppeler.sheets-compose-dialogs:<module>:<version>')
 }

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.2"
+core = "1.0.2"
 coreKtx = "1.13.1"
 lifecycleRuntimeKtx = "2.7.0"
 materialVersion = "1.3.0-alpha02"
@@ -16,6 +17,7 @@ espressoCore = "3.5.1"
 
 [libraries]
 
+core = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "core" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/background_color">
 
@@ -16,6 +17,14 @@
         android:textSize="24sp"
         android:textColor="@color/black"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_record"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fa_edit"
         android:layout_width="wrap_content"
@@ -26,4 +35,4 @@
         app:srcCompat="@drawable/edit"
         app:tint="@color/black"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

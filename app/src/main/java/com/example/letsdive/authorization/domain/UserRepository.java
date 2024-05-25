@@ -13,4 +13,6 @@ public interface UserRepository {
     void getAllUsers(@NonNull Consumer<Status<List<ItemUserEntity>>> callback);
 
     void getUser(@NonNull String id, @NonNull Consumer<Status<FullUserEntity>> callback);
+
+    void addRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<FullUserEntity>> callback);
 }

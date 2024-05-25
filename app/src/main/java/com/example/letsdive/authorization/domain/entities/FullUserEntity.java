@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.Set;
 
 public class FullUserEntity implements Serializable {
     @NonNull
@@ -12,28 +13,34 @@ public class FullUserEntity implements Serializable {
     private final String username;
     @Nullable
     private final String photoUrl;
+    @Nullable
+    private final Set<RecordEntity> records;
 
-    public FullUserEntity(
-            @NonNull String id,
-            @NonNull String username,
-            @Nullable String photoUrl
-    ) {
+    public FullUserEntity(@NonNull String id, @NonNull String username, @Nullable String photoUrl, @Nullable Set<RecordEntity> records) {
         this.id = id;
         this.username = username;
         this.photoUrl = photoUrl;
+        this.records = records;
     }
 
     @NonNull
     public String getId() {
         return id;
     }
+
     @NonNull
     public String getUsername() {
         return username;
     }
+
     @Nullable
     public String getPhotoUrl() {
         return photoUrl;
+    }
+
+    @Nullable
+    public Set<RecordEntity> getRecords() {
+        return records;
     }
 
     @Override
@@ -42,6 +49,7 @@ public class FullUserEntity implements Serializable {
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", photoUrl='" + photoUrl + '\'' +
+                ", records=" + records +
                 '}';
     }
 }

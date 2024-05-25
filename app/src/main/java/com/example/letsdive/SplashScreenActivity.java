@@ -20,6 +20,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getWindow().setStatusBarColor(getColor(R.color.background_color));
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
