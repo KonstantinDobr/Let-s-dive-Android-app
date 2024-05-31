@@ -24,6 +24,9 @@ public interface UserApi {
     @GET("server/v1/user/login")
     Call<UserDto> login();
 
-    @PUT("server/v1/user/{userId}/{recordId}")
+    @PUT("server/v1/user/record/{userId}/{recordId}")
     Call<UserDto> addRecord(@Path("userId") String userId, @Path("recordId") String recordId);
+
+    @PUT("server/v1/user/place/{userId}/{placeId}")
+    Call<UserDto> addPlace(@Path("userId") String userId, @Path("placeId") String placeId);
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.letsdive.authorization.data.dto.AccountDto;
+import com.example.letsdive.authorization.data.dto.PlaceDto;
 import com.example.letsdive.authorization.data.dto.RecordDto;
 import com.example.letsdive.authorization.data.dto.UserDto;
 import com.example.letsdive.authorization.data.network.RetrofitFactory;
@@ -14,6 +15,7 @@ import com.example.letsdive.authorization.data.utils.CallToConsumer;
 import com.example.letsdive.authorization.domain.UserRepository;
 import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.entities.ItemUserEntity;
+import com.example.letsdive.authorization.domain.entities.PlaceEntity;
 import com.example.letsdive.authorization.domain.entities.RecordEntity;
 import com.example.letsdive.authorization.domain.entities.Status;
 import com.example.letsdive.authorization.domain.sign.SignUserRepository;
@@ -63,10 +65,11 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
         userApi.getById(id).enqueue(new CallToConsumer<>(
                 callback,
                 user -> {
+                    if (user == null) return null;
                     final String resultId = user.id;
-                    final String username = user.username;
+                    final String username_login = user.username;
 
-                    Set<RecordEntity> result = new HashSet<>(user.records.size());
+                    Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
                     for (RecordDto recordDto : user.records) {
                         final String recordId = recordDto.id;
                         final String placeName = recordDto.placeName;
@@ -80,7 +83,7 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                         startDate != null &&
                                         endDate != null
                         ) {
-                            result.add(new RecordEntity(
+                            resultRecords.add(new RecordEntity(
                                     recordId,
                                     placeName,
                                     date,
@@ -91,12 +94,34 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         }
                     }
 
-                    if (resultId != null && username != null) {
+                    Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
+                    for (PlaceDto placeDto : user.places) {
+                        final String placeId = placeDto.id;
+                        final String placePlaceName = placeDto.placeName;
+                        final String placeInformation = placeDto.information;
+
+                        if (
+                                placeId != null &&
+                                        placePlaceName != null &&
+                                        placeInformation != null
+                        ) {
+                            resultPlaces.add(new PlaceEntity(
+                                    placeId,
+                                    placePlaceName,
+                                    placeInformation,
+                                    placeDto.latitude,
+                                    placeDto.longitude
+                            ));
+                        }
+                    }
+
+                    if (resultId != null && username_login != null) {
                         return new FullUserEntity(
                                 resultId,
-                                username,
+                                username_login,
                                 user.photoUrl,
-                                result
+                                resultRecords,
+                                resultPlaces
                         );
                     } else {
                         return null;
@@ -111,41 +136,133 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
         userApi.addRecord(userId, recordId).enqueue(new CallToConsumer<>(
                 callback,
                 user -> {
+                    if (user == null) return null;
                     final String resultId = user.id;
                     final String username_login = user.username;
-                    if (resultId != null && username_login != null) {
 
-                        Set<RecordEntity> result = new HashSet<>(user.records.size());
-                        for (RecordDto recordDto : user.records) {
-                            final String listRecordId = recordDto.id;
-                            final String placeName = recordDto.placeName;
-                            final String date = recordDto.date;
-                            final String startDate = recordDto.startDate;
-                            final String endDate = recordDto.endDate;
-                            if (
-                                    listRecordId != null &&
-                                            placeName != null &&
-                                            date != null &&
-                                            startDate != null &&
-                                            endDate != null
-                            ) {
-                                result.add(new RecordEntity(
-                                        listRecordId,
-                                        placeName,
-                                        date,
-                                        startDate,
-                                        endDate,
-                                        recordDto.depth
-                                ));
-                            }
+                    Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
+                    for (RecordDto recordDto : user.records) {
+                        final String listRecordId = recordDto.id;
+                        final String placeName = recordDto.placeName;
+                        final String date = recordDto.date;
+                        final String startDate = recordDto.startDate;
+                        final String endDate = recordDto.endDate;
+                        if (
+                                listRecordId != null &&
+                                        placeName != null &&
+                                        date != null &&
+                                        startDate != null &&
+                                        endDate != null
+                        ) {
+                            resultRecords.add(new RecordEntity(
+                                    listRecordId,
+                                    placeName,
+                                    date,
+                                    startDate,
+                                    endDate,
+                                    recordDto.depth
+                            ));
                         }
+                    }
 
+                    Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
+                    for (PlaceDto placeDto : user.places) {
+                        final String placeId = placeDto.id;
+                        final String placePlaceName = placeDto.placeName;
+                        final String placeInformation = placeDto.information;
 
+                        if (
+                                placeId != null &&
+                                        placePlaceName != null &&
+                                        placeInformation != null
+                        ) {
+                            resultPlaces.add(new PlaceEntity(
+                                    placeId,
+                                    placePlaceName,
+                                    placeInformation,
+                                    placeDto.latitude,
+                                    placeDto.longitude
+                            ));
+                        }
+                    }
+
+                    if (resultId != null && username_login != null) {
                         return new FullUserEntity(
                                 resultId,
                                 username_login,
                                 user.photoUrl,
-                                result
+                                resultRecords,
+                                resultPlaces
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+        ));
+    }
+
+    @Override
+    public void addPlace(@NonNull String userId, @NonNull String placeId, @NonNull Consumer<Status<FullUserEntity>> callback) {
+        userApi.addPlace(userId, placeId).enqueue(new CallToConsumer<>(
+                callback,
+                user -> {
+                    if (user == null) return null;
+                    final String resultId = user.id;
+                    final String username_login = user.username;
+
+                    Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
+                    for (RecordDto recordDto : user.records) {
+                        final String listRecordId = recordDto.id;
+                        final String placeName = recordDto.placeName;
+                        final String date = recordDto.date;
+                        final String startDate = recordDto.startDate;
+                        final String endDate = recordDto.endDate;
+                        if (
+                                listRecordId != null &&
+                                        placeName != null &&
+                                        date != null &&
+                                        startDate != null &&
+                                        endDate != null
+                        ) {
+                            resultRecords.add(new RecordEntity(
+                                    listRecordId,
+                                    placeName,
+                                    date,
+                                    startDate,
+                                    endDate,
+                                    recordDto.depth
+                            ));
+                        }
+                    }
+
+                    Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
+                    for (PlaceDto placeDto : user.places) {
+                        final String listPlaceId = placeDto.id;
+                        final String placePlaceName = placeDto.placeName;
+                        final String placeInformation = placeDto.information;
+
+                        if (
+                                listPlaceId != null &&
+                                        placePlaceName != null &&
+                                        placeInformation != null
+                        ) {
+                            resultPlaces.add(new PlaceEntity(
+                                    listPlaceId,
+                                    placePlaceName,
+                                    placeInformation,
+                                    placeDto.latitude,
+                                    placeDto.longitude
+                            ));
+                        }
+                    }
+
+                    if (resultId != null && username_login != null) {
+                        return new FullUserEntity(
+                                resultId,
+                                username_login,
+                                user.photoUrl,
+                                resultRecords,
+                                resultPlaces
                         );
                     } else {
                         return null;
@@ -181,7 +298,7 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                     final String resultId = user.id;
                     final String username_login = user.username;
 
-                    Set<RecordEntity> result = new HashSet<>(user.records.size());
+                    Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
                     for (RecordDto recordDto : user.records) {
                         final String recordId = recordDto.id;
                         final String placeName = recordDto.placeName;
@@ -195,7 +312,7 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                         startDate != null &&
                                         endDate != null
                         ) {
-                            result.add(new RecordEntity(
+                            resultRecords.add(new RecordEntity(
                                     recordId,
                                     placeName,
                                     date,
@@ -206,12 +323,34 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         }
                     }
 
+                    Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
+                    for (PlaceDto placeDto : user.places) {
+                        final String placeId = placeDto.id;
+                        final String placePlaceName = placeDto.placeName;
+                        final String placeInformation = placeDto.information;
+
+                        if (
+                                placeId != null &&
+                                        placePlaceName != null &&
+                                        placeInformation != null
+                        ) {
+                            resultPlaces.add(new PlaceEntity(
+                                    placeId,
+                                    placePlaceName,
+                                    placeInformation,
+                                    placeDto.latitude,
+                                    placeDto.longitude
+                            ));
+                        }
+                    }
+
                     if (resultId != null && username_login != null) {
                         return new FullUserEntity(
                                 resultId,
                                 username_login,
                                 user.photoUrl,
-                                result
+                                resultRecords,
+                                resultPlaces
                         );
                     } else {
                         return null;

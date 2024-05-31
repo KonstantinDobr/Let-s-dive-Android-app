@@ -1,6 +1,7 @@
 package com.example.letsdive.authorization.data.network;
 
 import com.example.letsdive.authorization.data.source.CredentialsDataSource;
+import com.example.letsdive.authorization.data.source.PlaceApi;
 import com.example.letsdive.authorization.data.source.RecordApi;
 import com.example.letsdive.authorization.data.source.UserApi;
 
@@ -39,7 +40,7 @@ public class RetrofitFactory {
             );
 
     private final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.102:8080/")
+            .baseUrl("http://192.168.0.103:8080/")
             .client(client.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -49,5 +50,9 @@ public class RetrofitFactory {
     }
     public RecordApi getRecordApi() {
         return retrofit.create(RecordApi.class);
+    }
+
+    public PlaceApi getPlaceApi() {
+        return retrofit.create(PlaceApi.class);
     }
 }

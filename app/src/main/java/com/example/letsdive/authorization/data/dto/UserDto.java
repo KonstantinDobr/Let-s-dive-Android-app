@@ -19,4 +19,7 @@ public class UserDto {
     @Nullable
     @SerializedName("records")
     public Set<RecordDto> records;
+    @Nullable
+    @SerializedName("places")
+    public Set<PlaceDto> places;
 }

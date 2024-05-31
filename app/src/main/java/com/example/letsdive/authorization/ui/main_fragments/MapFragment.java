@@ -8,25 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.letsdive.R;
+import com.example.letsdive.authorization.domain.entities.FullUserEntity;
+import com.example.letsdive.authorization.ui.services.MyMapServices;
 import com.example.letsdive.databinding.FragmentMapBinding;
+import com.google.android.gms.maps.SupportMapFragment;
 
-public class MapFragment extends Fragment {
-
-    private FragmentMapBinding binding;
-
-    public MapFragment() {
-        super(R.layout.fragment_map);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        binding = FragmentMapBinding.bind(view);
-    }
-
-    @Override
-    public void onDestroyView() {
-        binding = null;
-        super.onDestroyView();
-    }
+public class MapFragment extends SupportMapFragment {
 }

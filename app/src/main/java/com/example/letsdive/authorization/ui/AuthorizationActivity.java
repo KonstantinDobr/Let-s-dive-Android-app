@@ -16,7 +16,9 @@ import com.example.letsdive.authorization.ui.main_fragments.DiaryFragment;
 import com.example.letsdive.authorization.ui.main_fragments.MapFragment;
 import com.example.letsdive.authorization.ui.main_fragments.ProfileFragment;
 import com.example.letsdive.authorization.ui.main_fragments.TextbookFragment;
+import com.example.letsdive.authorization.ui.services.MyMapServices;
 import com.example.letsdive.databinding.ActivityAuthorizationBinding;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.Serializable;
@@ -53,8 +55,10 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
                             .replace(R.id.root, fragment)
                             .commit();
                 } else if (id == R.id.item_map) {
+                    MapFragment fragment = new MapFragment();
+                    fragment.getMapAsync(new MyMapServices(AuthorizationActivity.this, user));
                     fragmentManager.beginTransaction()
-                            .replace(R.id.root, new MapFragment())
+                            .replace(R.id.root, fragment)
                             .commit();
                 } else if (id == R.id.item_diary) {
                     DiaryFragment fragment = new DiaryFragment(user);

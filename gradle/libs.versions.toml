@@ -1,9 +1,13 @@
 [versions]
 agp = "8.3.2"
+compiler = "4.14.1"
 core = "1.0.2"
 coreKtx = "1.13.1"
+firebaseBom = "33.0.0"
+firebaseUiStorage = "7.2.0"
 lifecycleRuntimeKtx = "2.7.0"
 materialVersion = "1.3.0-alpha02"
+playServicesMaps = "18.2.0"
 retrofit = "2.11.0"
 appcompat = "1.6.1"
 navigation = "2.7.7"
@@ -17,7 +21,10 @@ espressoCore = "3.5.1"
 
 [libraries]
 
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 core = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "core" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-ui-storage = { module = "com.firebaseui:firebase-ui-storage", version.ref = "firebaseUiStorage" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -30,6 +37,7 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 
 material-v130alpha02 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }

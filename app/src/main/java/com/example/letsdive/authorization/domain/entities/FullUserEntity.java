@@ -15,12 +15,21 @@ public class FullUserEntity implements Serializable {
     private final String photoUrl;
     @Nullable
     private final Set<RecordEntity> records;
+    @Nullable
+    private final Set<PlaceEntity> places;
 
-    public FullUserEntity(@NonNull String id, @NonNull String username, @Nullable String photoUrl, @Nullable Set<RecordEntity> records) {
+    public FullUserEntity(
+            @NonNull String id,
+            @NonNull String username,
+            @Nullable String photoUrl,
+            @Nullable Set<RecordEntity> records,
+            @Nullable Set<PlaceEntity> places
+    ) {
         this.id = id;
         this.username = username;
         this.photoUrl = photoUrl;
         this.records = records;
+        this.places = places;
     }
 
     @NonNull
@@ -43,6 +52,11 @@ public class FullUserEntity implements Serializable {
         return records;
     }
 
+    @Nullable
+    public Set<PlaceEntity> getPlaces() {
+        return places;
+    }
+
     @Override
     public String toString() {
         return "FullUserEntity{" +
@@ -50,6 +64,7 @@ public class FullUserEntity implements Serializable {
                 ", username='" + username + '\'' +
                 ", photoUrl='" + photoUrl + '\'' +
                 ", records=" + records +
+                ", places=" + places +
                 '}';
     }
 }

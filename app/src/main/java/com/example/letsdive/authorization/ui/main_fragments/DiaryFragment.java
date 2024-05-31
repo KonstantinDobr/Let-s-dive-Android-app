@@ -35,7 +35,6 @@ import com.example.letsdive.authorization.domain.record.AddRecordUseCase;
 import com.example.letsdive.authorization.domain.sign.LoginUserUseCase;
 import com.example.letsdive.authorization.ui.recycler.RecordAdapter;
 import com.example.letsdive.authorization.ui.recycler.SpacingItemDecorator;
-import com.example.letsdive.authorization.ui.util_fragments.TimePickerFragment;
 import com.example.letsdive.databinding.DialogWindowBinding;
 import com.example.letsdive.databinding.FragmentDiaryBinding;
 import com.example.letsdive.databinding.TitleBinding;
@@ -110,7 +109,19 @@ public class DiaryFragment extends Fragment {
         DatePickerDialog pickerDialog  = new DatePickerDialog(requireContext(), R.style.DateDialogTheme, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                date = dayOfMonth + "-" + month + "-" + year;
+
+                String myYear = String.valueOf(year);
+                String myMonth = String.valueOf(month + 1);
+                String myDay = String.valueOf(dayOfMonth);
+
+                if (month < 9) {
+                    myMonth = '0' + myMonth;
+                }
+                if (dayOfMonth < 10) {
+                    myDay = '0' + myDay;
+                }
+
+                date = myDay + "-" + myMonth + "-" + myYear;
                 openTimeDialog(true);
             }
         }, year, month, dayOfMonth);
@@ -126,7 +137,18 @@ public class DiaryFragment extends Fragment {
         TimePickerDialog pickerDialog = new TimePickerDialog(getContext(), R.style.TimePickerDialogTheme, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String time = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
+
+                String myHour = String.valueOf(hourOfDay);
+                String myMinute = String.valueOf(minute);
+
+                if (hourOfDay < 10) {
+                    myHour = '0' + myHour;
+                }
+                if (minute < 10) {
+                    myMinute = '0' + myMinute;
+                }
+
+                String time = myHour + ":" + myMinute;
                 if (is_startTime) {
                     startTime = time;
                     openTimeDialog(false);

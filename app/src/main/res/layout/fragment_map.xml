@@ -14,4 +14,10 @@
         android:textSize="26dp"
         android:layout_gravity="center"/>
 
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/google_maps"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:name="com.google.android.gms.maps.SupportMapFragment"/>-->
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
