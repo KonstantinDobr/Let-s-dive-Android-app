@@ -15,8 +15,7 @@
         android:textSize="18dp"
         android:textColorHint="@color/text"
         android:textColor="@color/text"
-        android:layout_margin="10dp"
-        android:focusable="false"/>
+        android:layout_margin="10dp"/>
 
 
     <EditText
@@ -27,8 +26,7 @@
         android:gravity="start"
         android:textColorHint="@color/text"
         android:textColor="@color/text"
-        android:layout_margin="10dp"
-        android:focusable="false"/>
+        android:layout_margin="10dp"/>
 
 
     <LinearLayout

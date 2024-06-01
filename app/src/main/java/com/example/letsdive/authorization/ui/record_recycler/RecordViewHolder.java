@@ -1,8 +1,5 @@
-package com.example.letsdive.authorization.ui.recycler;
+package com.example.letsdive.authorization.ui.record_recycler;
 
-import android.view.View;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.letsdive.authorization.domain.entities.RecordEntity;

@@ -272,6 +272,146 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
     }
 
     @Override
+    public void deletePlace(@NonNull String userId, @NonNull String placeId, @NonNull Consumer<Status<FullUserEntity>> callback) {
+        userApi.deletePlace(userId, placeId).enqueue(new CallToConsumer<>(
+                callback,
+                userDto -> {
+                    if (userDto == null) return null;
+                    final String resultId = userDto.id;
+                    final String username_login = userDto.username;
+
+                    Set<RecordEntity> resultRecords = new HashSet<>(userDto.records.size());
+                    for (RecordDto recordDto : userDto.records) {
+                        final String listRecordId = recordDto.id;
+                        final String placeName = recordDto.placeName;
+                        final String date = recordDto.date;
+                        final String startDate = recordDto.startDate;
+                        final String endDate = recordDto.endDate;
+                        if (
+                                listRecordId != null &&
+                                        placeName != null &&
+                                        date != null &&
+                                        startDate != null &&
+                                        endDate != null
+                        ) {
+                            resultRecords.add(new RecordEntity(
+                                    listRecordId,
+                                    placeName,
+                                    date,
+                                    startDate,
+                                    endDate,
+                                    recordDto.depth
+                            ));
+                        }
+                    }
+
+                    Set<PlaceEntity> resultPlaces = new HashSet<>(userDto.places.size());
+                    for (PlaceDto placeDto : userDto.places) {
+                        final String listPlaceId = placeDto.id;
+                        final String placePlaceName = placeDto.placeName;
+                        final String placeInformation = placeDto.information;
+
+                        if (
+                                listPlaceId != null &&
+                                        placePlaceName != null &&
+                                        placeInformation != null
+                        ) {
+                            resultPlaces.add(new PlaceEntity(
+                                    listPlaceId,
+                                    placePlaceName,
+                                    placeInformation,
+                                    placeDto.latitude,
+                                    placeDto.longitude
+                            ));
+                        }
+                    }
+
+                    if (resultId != null && username_login != null) {
+                        return new FullUserEntity(
+                                resultId,
+                                username_login,
+                                userDto.photoUrl,
+                                resultRecords,
+                                resultPlaces
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+        ));
+    }
+
+    @Override
+    public void getUserByUsername(@NonNull String username, @NonNull Consumer<Status<FullUserEntity>> callback) {
+        userApi.getByUsername(username).enqueue(new CallToConsumer<>(
+                callback,
+                user -> {
+                    if (user == null) return null;
+                    final String resultId = user.id;
+                    final String username_login = user.username;
+
+                    Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
+                    for (RecordDto recordDto : user.records) {
+                        final String recordId = recordDto.id;
+                        final String placeName = recordDto.placeName;
+                        final String date = recordDto.date;
+                        final String startDate = recordDto.startDate;
+                        final String endDate = recordDto.endDate;
+                        if (
+                                recordId != null &&
+                                        placeName != null &&
+                                        date != null &&
+                                        startDate != null &&
+                                        endDate != null
+                        ) {
+                            resultRecords.add(new RecordEntity(
+                                    recordId,
+                                    placeName,
+                                    date,
+                                    startDate,
+                                    endDate,
+                                    recordDto.depth
+                            ));
+                        }
+                    }
+
+                    Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
+                    for (PlaceDto placeDto : user.places) {
+                        final String placeId = placeDto.id;
+                        final String placePlaceName = placeDto.placeName;
+                        final String placeInformation = placeDto.information;
+
+                        if (
+                                placeId != null &&
+                                        placePlaceName != null &&
+                                        placeInformation != null
+                        ) {
+                            resultPlaces.add(new PlaceEntity(
+                                    placeId,
+                                    placePlaceName,
+                                    placeInformation,
+                                    placeDto.latitude,
+                                    placeDto.longitude
+                            ));
+                        }
+                    }
+
+                    if (resultId != null && username_login != null) {
+                        return new FullUserEntity(
+                                resultId,
+                                username_login,
+                                user.photoUrl,
+                                resultRecords,
+                                resultPlaces
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+        ));
+    }
+
+    @Override
     public void isExistUser(@NonNull String username, Consumer<Status<Void>> callback) {
         userApi.isExist(username).enqueue(new CallToConsumer<>(
                 callback,

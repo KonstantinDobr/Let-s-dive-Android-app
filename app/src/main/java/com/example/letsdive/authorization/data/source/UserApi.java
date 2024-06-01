@@ -2,6 +2,7 @@ package com.example.letsdive.authorization.data.source;
 
 import com.example.letsdive.authorization.data.dto.AccountDto;
 import com.example.letsdive.authorization.data.dto.UserDto;
+import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 
 import java.util.List;
 
@@ -29,4 +30,10 @@ public interface UserApi {
 
     @PUT("server/v1/user/place/{userId}/{placeId}")
     Call<UserDto> addPlace(@Path("userId") String userId, @Path("placeId") String placeId);
+
+    @PUT("server/v1/user/place/delete/{userId}/{placeId}")
+    Call<UserDto> deletePlace(@Path("userId") String userId, @Path("placeId") String placeId);
+
+    @GET("/server/v1/user/username/{username}")
+    Call<UserDto> getByUsername(@Path("username") String username);
 }

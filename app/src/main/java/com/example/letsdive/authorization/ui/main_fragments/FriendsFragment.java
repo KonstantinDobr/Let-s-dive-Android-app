@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment;
 import com.example.letsdive.R;
 import com.example.letsdive.databinding.FragmentTextbookBinding;
 
-public class TextbookFragment extends Fragment {
+public class FriendsFragment extends Fragment {
 
     private FragmentTextbookBinding binding;
 
-    public TextbookFragment() {
+    public FriendsFragment() {
         super(R.layout.fragment_textbook);
     }
 

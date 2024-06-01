@@ -18,8 +18,8 @@
         android:icon="@drawable/diary"
         android:title="@string/diary"/>
     <item
-        android:id="@+id/item_textbook"
+        android:id="@+id/item_friends"
         android:enabled="true"
-        android:icon="@drawable/textbook"
-        android:title="@string/textbook"/>
+        android:icon="@drawable/friends"
+        android:title="@string/friends"/>
 </menu>

@@ -11,17 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.letsdive.R;
+import com.example.letsdive.authorization.data.UserRepositoryImpl;
+import com.example.letsdive.authorization.domain.GetUserByUsernameUseCase;
 import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.ui.main_fragments.DiaryFragment;
 import com.example.letsdive.authorization.ui.main_fragments.MapFragment;
 import com.example.letsdive.authorization.ui.main_fragments.ProfileFragment;
-import com.example.letsdive.authorization.ui.main_fragments.TextbookFragment;
+import com.example.letsdive.authorization.ui.main_fragments.FriendsFragment;
 import com.example.letsdive.authorization.ui.services.MyMapServices;
 import com.example.letsdive.databinding.ActivityAuthorizationBinding;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.io.Serializable;
 
 public class AuthorizationActivity extends AppCompatActivity implements Postman {
 
@@ -29,7 +28,11 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
 
     private FragmentManager fragmentManager;
 
-    private FullUserEntity user;
+    private String username;
+
+    private final GetUserByUsernameUseCase getUserByUsernameUseCase = new GetUserByUsernameUseCase(
+            UserRepositoryImpl.getInstance()
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,30 +49,37 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
             @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (user == null) {
-                    Log.d("AuthorizationActivity", "Null user");
-                } else if (id == R.id.item_profile) {
-                    ProfileFragment fragment = new ProfileFragment(user);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.root, fragment)
-                            .commit();
-                } else if (id == R.id.item_map) {
-                    MapFragment fragment = new MapFragment();
-                    fragment.getMapAsync(new MyMapServices(AuthorizationActivity.this, user));
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.root, fragment)
-                            .commit();
-                } else if (id == R.id.item_diary) {
-                    DiaryFragment fragment = new DiaryFragment(user);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.root, fragment)
-                            .commit();
-                } else if (id == R.id.item_textbook) {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.root, new TextbookFragment())
-                            .commit();
-                }
+
+                getUserByUsernameUseCase.execute(
+                        username,
+                        userEntityStatus -> {
+                            FullUserEntity user = userEntityStatus.getValue();
+                            int id = item.getItemId();
+                            if (user == null) {
+                                Log.d("AuthorizationActivity", "Null user");
+                            } else if (id == R.id.item_profile) {
+                                ProfileFragment fragment = new ProfileFragment(user);
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.root, fragment)
+                                        .commit();
+                            } else if (id == R.id.item_map) {
+                                MapFragment fragment = new MapFragment();
+                                fragment.getMapAsync(new MyMapServices(AuthorizationActivity.this, user));
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.root, fragment)
+                                        .commit();
+                            } else if (id == R.id.item_diary) {
+                                DiaryFragment fragment = new DiaryFragment(user);
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.root, fragment)
+                                        .commit();
+                            } else if (id == R.id.item_friends) {
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.root, new FriendsFragment())
+                                        .commit();
+                            }
+                        });
+
                 return true;
             }
         });
@@ -78,8 +88,7 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
 
     @Override
     public void fragmentMail(FullUserEntity user) {
-        this.user = user;
-//        Log.d("ABACABA", user.getUsername());
+        this.username = user.getUsername();
         binding.bottomNavigation.setVisibility(View.VISIBLE);
     }
 }

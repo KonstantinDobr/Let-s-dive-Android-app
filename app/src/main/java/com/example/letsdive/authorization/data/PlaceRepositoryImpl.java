@@ -35,7 +35,7 @@ public class PlaceRepositoryImpl implements PlaceRepository {
             double longitude,
             Consumer<Status<PlaceEntity>> callback
     ) {
-        placeApi.createRecord(new PlaceInitDto(
+        placeApi.createPlace(new PlaceInitDto(
                 placeName,
                 information,
                 latitude,
@@ -69,5 +69,62 @@ public class PlaceRepositoryImpl implements PlaceRepository {
     @Override
     public void getPlace(@NonNull String id, @NonNull Consumer<Status<PlaceEntity>> callback) {
 
+    }
+
+    @Override
+    public void updatePlace(
+            @NonNull String id,
+            @NonNull String placeName,
+            @NonNull String information,
+            double latitude,
+            double longitude,
+            Consumer<Status<PlaceEntity>> callback
+    ) {
+        placeApi.updatePlace(id, new PlaceInitDto(
+                placeName,
+                information,
+                latitude,
+                longitude,
+                null
+        )).enqueue(new CallToConsumer<>(
+                callback,
+                placeDto -> null
+        ));
+    }
+
+    @Override
+    public void getByPlaceName(@NonNull String placeName, Consumer<Status<PlaceEntity>> callback) {
+        placeApi.getByPlaceName(placeName).enqueue(new CallToConsumer<>(
+                callback,
+                placeDto -> {
+                    final String resultId = placeDto.id;
+                    final String resultPlaceName = placeDto.placeName;
+                    final String resultInformation = placeDto.information;
+
+                    if (
+                            resultId != null &&
+                                    resultPlaceName != null &&
+                                    resultInformation != null
+                    ) {
+                        return new PlaceEntity(
+                                resultId,
+                                resultPlaceName,
+                                resultInformation,
+                                placeDto.latitude,
+                                placeDto.longitude
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+        ));
+    }
+
+    @Override
+    public void deletePlaceById(@NonNull String id, @NonNull Consumer<Status<Void>> callback) {
+        placeApi.deleteById(id).enqueue(new CallToConsumer<>(
+                callback,
+                dto -> null
+        ));
     }
 }

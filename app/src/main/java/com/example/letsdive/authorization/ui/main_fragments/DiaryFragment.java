@@ -1,15 +1,11 @@
 package com.example.letsdive.authorization.ui.main_fragments;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -22,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
 import com.example.letsdive.R;
@@ -32,23 +27,13 @@ import com.example.letsdive.authorization.domain.AddRecordToUserUseCase;
 import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.entities.RecordEntity;
 import com.example.letsdive.authorization.domain.record.AddRecordUseCase;
-import com.example.letsdive.authorization.domain.sign.LoginUserUseCase;
-import com.example.letsdive.authorization.ui.recycler.RecordAdapter;
-import com.example.letsdive.authorization.ui.recycler.SpacingItemDecorator;
-import com.example.letsdive.databinding.DialogWindowBinding;
+import com.example.letsdive.authorization.ui.record_recycler.RecordAdapter;
+import com.example.letsdive.authorization.ui.record_recycler.SpacingItemDecorator;
 import com.example.letsdive.databinding.FragmentDiaryBinding;
-import com.example.letsdive.databinding.TitleBinding;
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 
 public class DiaryFragment extends Fragment {
