@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/background_color"
     android:layout_gravity="center">
@@ -28,10 +29,65 @@
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginStart="20dp"
         android:text="@string/username"
         android:textSize="20sp"
         android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_email_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/email_label"
+        android:textSize="20sp"
+        android:textColor="@color/text"/>
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/email"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_info_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/info_label"
+        android:textSize="20sp"
+        android:textColor="@color/text"/>
+
+    <EditText
+        android:id="@+id/et_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/info"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fa_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            app:backgroundTint="@color/background_color_windows"
+            app:srcCompat="@drawable/edit"
+            app:tint="@color/black"/>
+    </FrameLayout>
 
 </LinearLayout>

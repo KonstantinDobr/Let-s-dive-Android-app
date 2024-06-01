@@ -28,7 +28,7 @@ import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.entities.RecordEntity;
 import com.example.letsdive.authorization.domain.record.AddRecordUseCase;
 import com.example.letsdive.authorization.ui.record_recycler.RecordAdapter;
-import com.example.letsdive.authorization.ui.record_recycler.SpacingItemDecorator;
+import com.example.letsdive.authorization.ui.utils.SpacingItemDecorator;
 import com.example.letsdive.databinding.FragmentDiaryBinding;
 
 import java.util.ArrayList;

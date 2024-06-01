@@ -15,24 +15,31 @@ import androidx.annotation.NonNull;
 import com.example.letsdive.R;
 import com.example.letsdive.authorization.data.PlaceRepositoryImpl;
 import com.example.letsdive.authorization.data.RecordRepositoryImpl;
+import com.example.letsdive.authorization.data.RelationshipRepositoryImpl;
 import com.example.letsdive.authorization.data.UserRepositoryImpl;
 import com.example.letsdive.authorization.domain.AddPlaceToUserUseCase;
 import com.example.letsdive.authorization.domain.DeletePlaceFromUserUseCase;
+import com.example.letsdive.authorization.domain.GetUserByIdUseCase;
+import com.example.letsdive.authorization.domain.GetUserByUsernameUseCase;
 import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.entities.PlaceEntity;
 import com.example.letsdive.authorization.domain.entities.RecordEntity;
+import com.example.letsdive.authorization.domain.entities.UserRelationshipEntity;
 import com.example.letsdive.authorization.domain.place.AddPlaceUseCase;
 import com.example.letsdive.authorization.domain.place.DeletePlaceByIdUseCase;
 import com.example.letsdive.authorization.domain.place.GetByPlaceNameUseCase;
 import com.example.letsdive.authorization.domain.place.UpdatePlaceUseCase;
 import com.example.letsdive.authorization.domain.record.AddRecordUseCase;
+import com.example.letsdive.authorization.domain.relationship.GetByFirstIdUseCase;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class MyMapServices implements OnMapReadyCallback {
@@ -58,6 +65,12 @@ public class MyMapServices implements OnMapReadyCallback {
     private final DeletePlaceByIdUseCase deletePlaceByIdUseCase = new DeletePlaceByIdUseCase(
             PlaceRepositoryImpl.getInstance()
     );
+    private final GetByFirstIdUseCase getByFirstIdUseCase = new GetByFirstIdUseCase(
+            RelationshipRepositoryImpl.getInstance()
+    );
+    private final GetUserByIdUseCase getUserByIdUseCase = new GetUserByIdUseCase(
+            UserRepositoryImpl.getInstance()
+    );
 
 
     public MyMapServices(Context context, FullUserEntity user) {
@@ -76,9 +89,45 @@ public class MyMapServices implements OnMapReadyCallback {
 
         for (PlaceEntity place : user.getPlaces()) {
             googleMap.addMarker(new MarkerOptions().
-                    position(new LatLng(place.getLatitude(), place.getLongitude())))
+                    position(new LatLng(place.getLatitude(), place.getLongitude()))
+                    )
                     .setTitle(place.getPlaceName());
         }
+
+        getByFirstIdUseCase.execute(
+                user.getId(),
+                setStatus -> {
+                    Set<UserRelationshipEntity> relationshipEntities = setStatus.getValue();
+                    if (relationshipEntities != null && !relationshipEntities.isEmpty()) {
+                        for (UserRelationshipEntity relationship : relationshipEntities) {
+                            getByFirstIdUseCase.execute(
+                                    relationship.getSecondId(),
+                                    setStatus1 -> {
+                                        Set<UserRelationshipEntity> relationshipEntities1 = setStatus1.getValue();
+                                        if (relationshipEntities1 != null && !relationshipEntities1.isEmpty()) {
+                                            for (UserRelationshipEntity relationship1 : relationshipEntities1) {
+                                                if (relationship1.getSecondId().equals(user.getId())) {
+                                                    getUserByIdUseCase.execute(
+                                                            relationship1.getFirstId(),
+                                                            userEntityStatus -> {
+                                                                FullUserEntity friend = userEntityStatus.getValue();
+                                                                for (PlaceEntity place : friend.getPlaces()) {
+                                                                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(place.getLatitude(), place.getLongitude()));
+//                                                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.friends));
+                                                                    markerOptions.title(place.getPlaceName());
+                                                                    googleMap.addMarker(markerOptions);
+                                                                }
+                                                            }
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                            );
+                        }
+                    }
+                }
+                );
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -175,48 +224,70 @@ public class MyMapServices implements OnMapReadyCallback {
                         @Override
                         public void onClick(View v) {
 
-                            if (changeButton.getText().equals("Изменить")) {
+                            getUserByIdUseCase.execute(
+                                user.getId(),
+                                userEntityStatus -> {
+                                    FullUserEntity mainUser = userEntityStatus.getValue();
+                                    Set<PlaceEntity> placeEntities = mainUser.getPlaces();
 
-                                placeEditText.setFocusable(true);
-                                placeEditText.setFocusableInTouchMode(true);
-                                placeEditText.setClickable(true);
+                                    boolean is_yours = false;
 
-                                infoEditText.setFocusable(true);
-                                infoEditText.setFocusableInTouchMode(true);
-                                infoEditText.setClickable(true);
+                                    for (PlaceEntity place1 : placeEntities) {
+                                        if (place.getId().equals(place1.getId())) {
+                                            is_yours = true;
+                                            if (changeButton.getText().equals("Изменить")) {
 
-                                changeButton.setText("Сохранить");
-                            } else {
+                                                placeEditText.setFocusable(true);
+                                                placeEditText.setFocusableInTouchMode(true);
+                                                placeEditText.setClickable(true);
 
-                                String placeNameText = placeEditText.getText().toString();
-                                String infoText = infoEditText.getText().toString();
+                                                infoEditText.setFocusable(true);
+                                                infoEditText.setFocusableInTouchMode(true);
+                                                infoEditText.setClickable(true);
 
-                                if (placeNameText.isEmpty()) {
-                                    Toast.makeText(context, "Place name cannot be null", Toast.LENGTH_SHORT).show();
-                                } else if (infoText.isEmpty()) {
-                                    Toast.makeText(context, "Information cannot be null", Toast.LENGTH_SHORT).show();
-                                } else {
+                                                changeButton.setText("Сохранить");
+                                            } else {
 
-                                    updatePlaceUseCase.execute(
-                                            place.getId(),
-                                            placeNameText,
-                                            infoText,
-                                            place.getLatitude(),
-                                            place.getLongitude(),
-                                            placeEntityStatus -> {
-                                                PlaceEntity newPlace = placeEntityStatus.getValue();
-                                                inputMarker.setVisible(false);
-                                                inputMarker.remove();
-                                                googleMap.addMarker(new MarkerOptions().
-                                                                position(new LatLng(place.getLatitude(), place.getLongitude())))
-                                                        .setTitle(placeNameText);
+                                                String placeNameText = placeEditText.getText().toString();
+                                                String infoText = infoEditText.getText().toString();
+
+                                                if (placeNameText.isEmpty()) {
+                                                    Toast.makeText(context, "Place name cannot be null", Toast.LENGTH_SHORT).show();
+                                                } else if (infoText.isEmpty()) {
+                                                    Toast.makeText(context, "Information cannot be null", Toast.LENGTH_SHORT).show();
+                                                } else {
+
+                                                    updatePlaceUseCase.execute(
+                                                            place.getId(),
+                                                            placeNameText,
+                                                            infoText,
+                                                            place.getLatitude(),
+                                                            place.getLongitude(),
+                                                            placeEntityStatus -> {
+                                                                PlaceEntity newPlace = placeEntityStatus.getValue();
+                                                                inputMarker.setVisible(false);
+                                                                inputMarker.remove();
+                                                                googleMap.addMarker(new MarkerOptions().
+                                                                                position(new LatLng(place.getLatitude(), place.getLongitude())))
+                                                                        .setTitle(placeNameText);
+                                                            }
+                                                    );
+
+                                                    changeButton.setText("Изменить");
+                                                    dialogWindow.dismiss();
+                                                }
                                             }
-                                    );
+                                        }
+                                    }
 
-                                    changeButton.setText("Изменить");
-                                    dialogWindow.dismiss();
+                                    if (!is_yours) {
+                                        Toast.makeText(context, "It is not your record", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
+                            );
+
+
+
                         }
                     });
 
@@ -224,23 +295,44 @@ public class MyMapServices implements OnMapReadyCallback {
                         @Override
                         public void onClick(View v) {
 
-                            if (changeButton.getText().equals("Изменить")) {
-                                deletePlaceFromUserUseCase.execute(
-                                        user.getId(),
-                                        place.getId(),
-                                        userEntityStatus -> {}
-                                        );
+                            getUserByIdUseCase.execute(
+                                    user.getId(),
+                                    userEntityStatus1 -> {
+                                        FullUserEntity mainUser = userEntityStatus1.getValue();
+                                        Set<PlaceEntity> placeEntities = mainUser.getPlaces();
 
-                                deletePlaceByIdUseCase.execute(
-                                        place.getId(),
-                                        placeEntityStatus -> {}
-                                );
+                                        boolean is_yours = false;
 
-                                inputMarker.setVisible(false);
-                                inputMarker.remove();
+                                        for (PlaceEntity place1 : placeEntities) {
+                                            if (place1.getId().equals(place.getId())) {
+                                                is_yours = true;
+                                                if (changeButton.getText().equals("Изменить")) {
+                                                    deletePlaceFromUserUseCase.execute(
+                                                            user.getId(),
+                                                            place.getId(),
+                                                            userEntityStatus -> {}
+                                                    );
 
-                                dialogWindow.dismiss();
-                            }
+                                                    deletePlaceByIdUseCase.execute(
+                                                            place.getId(),
+                                                            placeEntityStatus -> {}
+                                                    );
+
+                                                    inputMarker.setVisible(false);
+                                                    inputMarker.remove();
+
+                                                    dialogWindow.dismiss();
+                                                }
+                                            }
+                                        }
+
+                                        if (!is_yours) {
+                                            Toast.makeText(context, "It is not your record", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                            );
+
+
 
                         }
                     });

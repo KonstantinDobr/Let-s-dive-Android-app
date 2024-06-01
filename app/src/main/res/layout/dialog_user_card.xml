@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/custom_dialog_window"
+    android:backgroundTint="@color/background_color">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_image"/>
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:gravity="start"
+        android:text="@string/username"
+        android:textColor="@color/text"
+        android:layout_margin="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:gravity="start"
+        android:text="@string/email"
+        android:textColor="@color/text"
+        android:layout_margin="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:gravity="start"
+        android:text="@string/info"
+        android:textColor="@color/text"
+        android:layout_margin="5dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_addFriend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Добавить в друзья"
+            android:textSize="18dp"
+            android:textColor="@color/background_color"
+            app:backgroundTint="@color/button"
+            android:background="@drawable/custom_button"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginVertical="15dp"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -75,7 +75,7 @@ public class AuthorizationActivity extends AppCompatActivity implements Postman 
                                         .commit();
                             } else if (id == R.id.item_friends) {
                                 fragmentManager.beginTransaction()
-                                        .replace(R.id.root, new FriendsFragment())
+                                        .replace(R.id.root, new FriendsFragment(AuthorizationActivity.this, user))
                                         .commit();
                             }
                         });

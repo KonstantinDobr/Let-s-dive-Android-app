@@ -13,6 +13,14 @@ public class UserDto {
     @Nullable
     @SerializedName("username")
     public String username;
+
+    @Nullable
+    @SerializedName("email")
+    public String email;
+
+    @Nullable
+    @SerializedName("information")
+    public String information;
     @Nullable
     @SerializedName("photoUrl")
     public String photoUrl;

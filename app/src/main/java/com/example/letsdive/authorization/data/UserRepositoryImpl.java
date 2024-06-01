@@ -52,7 +52,7 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         final String id = user.id;
                         final String username = user.username;
                         if (id != null && username != null) {
-                            result.add(new ItemUserEntity(id, username));
+                            result.add(new ItemUserEntity(id, username, user.email));
                         }
                     }
                     return result;
@@ -120,6 +120,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                 resultId,
                                 username_login,
                                 user.photoUrl,
+                                user.email,
+                                user.information,
                                 resultRecords,
                                 resultPlaces
                         );
@@ -191,6 +193,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                 resultId,
                                 username_login,
                                 user.photoUrl,
+                                user.email,
+                                user.information,
                                 resultRecords,
                                 resultPlaces
                         );
@@ -261,6 +265,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                 resultId,
                                 username_login,
                                 user.photoUrl,
+                                user.email,
+                                user.information,
                                 resultRecords,
                                 resultPlaces
                         );
@@ -331,6 +337,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                 resultId,
                                 username_login,
                                 userDto.photoUrl,
+                                userDto.email,
+                                userDto.information,
                                 resultRecords,
                                 resultPlaces
                         );
@@ -401,11 +409,87 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                 resultId,
                                 username_login,
                                 user.photoUrl,
+                                user.email,
+                                user.information,
                                 resultRecords,
                                 resultPlaces
                         );
                     } else {
                         return null;
+                    }
+                }
+        ));
+    }
+
+    @Override
+    public void update(@NonNull String id, @NonNull String email, @NonNull String information, @NonNull Consumer<Status<FullUserEntity>> callback) {
+        userApi.update(id, email, information).enqueue(new CallToConsumer<>(
+                callback,
+                user -> {
+                    {
+                        if (user == null) return null;
+                        final String resultId = user.id;
+                        final String username_login = user.username;
+
+                        Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
+                        for (RecordDto recordDto : user.records) {
+                            final String recordId = recordDto.id;
+                            final String placeName = recordDto.placeName;
+                            final String date = recordDto.date;
+                            final String startDate = recordDto.startDate;
+                            final String endDate = recordDto.endDate;
+                            if (
+                                    recordId != null &&
+                                            placeName != null &&
+                                            date != null &&
+                                            startDate != null &&
+                                            endDate != null
+                            ) {
+                                resultRecords.add(new RecordEntity(
+                                        recordId,
+                                        placeName,
+                                        date,
+                                        startDate,
+                                        endDate,
+                                        recordDto.depth
+                                ));
+                            }
+                        }
+
+                        Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
+                        for (PlaceDto placeDto : user.places) {
+                            final String placeId = placeDto.id;
+                            final String placePlaceName = placeDto.placeName;
+                            final String placeInformation = placeDto.information;
+
+                            if (
+                                    placeId != null &&
+                                            placePlaceName != null &&
+                                            placeInformation != null
+                            ) {
+                                resultPlaces.add(new PlaceEntity(
+                                        placeId,
+                                        placePlaceName,
+                                        placeInformation,
+                                        placeDto.latitude,
+                                        placeDto.longitude
+                                ));
+                            }
+                        }
+
+                        if (resultId != null && username_login != null) {
+                            return new FullUserEntity(
+                                    resultId,
+                                    username_login,
+                                    user.photoUrl,
+                                    user.email,
+                                    user.information,
+                                    resultRecords,
+                                    resultPlaces
+                            );
+                        } else {
+                            return null;
+                        }
                     }
                 }
         ));
@@ -489,6 +573,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                 resultId,
                                 username_login,
                                 user.photoUrl,
+                                user.email,
+                                user.information,
                                 resultRecords,
                                 resultPlaces
                         );

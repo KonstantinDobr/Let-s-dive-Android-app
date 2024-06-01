@@ -1,4 +1,4 @@
-package com.example.letsdive.authorization.ui.record_recycler;
+package com.example.letsdive.authorization.ui.utils;
 
 import android.graphics.Rect;
 import android.view.View;

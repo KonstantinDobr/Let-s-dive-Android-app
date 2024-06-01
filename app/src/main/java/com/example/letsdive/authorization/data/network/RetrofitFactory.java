@@ -4,6 +4,7 @@ import com.example.letsdive.authorization.data.source.CredentialsDataSource;
 import com.example.letsdive.authorization.data.source.PlaceApi;
 import com.example.letsdive.authorization.data.source.RecordApi;
 import com.example.letsdive.authorization.data.source.UserApi;
+import com.example.letsdive.authorization.data.source.UserRelationshipApi;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -54,5 +55,8 @@ public class RetrofitFactory {
 
     public PlaceApi getPlaceApi() {
         return retrofit.create(PlaceApi.class);
+    }
+    public UserRelationshipApi getUserRelationshipApi() {
+        return retrofit.create(UserRelationshipApi.class);
     }
 }
