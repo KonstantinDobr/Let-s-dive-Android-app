@@ -55,12 +55,8 @@ dependencies {
     runtimeOnly(libs.material.v130alpha02)
 
     implementation(libs.core)
-//    implementation('com.maxkeppeler.sheets-compose-dialogs:<module>:<version>')
 
     annotationProcessor(libs.compiler)
-    implementation(libs.firebase.ui.storage)
-    implementation(libs.firebase.bom)
-    implementation("com.google.firebase:firebase-analytics")
     implementation(libs.play.services.maps)
 
 }
