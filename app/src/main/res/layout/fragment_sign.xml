@@ -50,16 +50,16 @@
         android:textColor="@color/black"
         android:inputType="textPassword"/>
 
-    <Button
-        style="@style/Widget.Material3.Button.ElevatedButton"
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Далее"
-        android:backgroundTint="@color/button"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textAlignment="center"
+        android:background="@drawable/custom_button"
+        app:backgroundTint="@color/button"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

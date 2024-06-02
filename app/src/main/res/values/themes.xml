@@ -6,10 +6,45 @@
     </style>
 
     <style name="Theme.LetsDive" parent="Base.Theme.LetsDive" />
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Customize your theme here -->
-        <item name="colorPrimary">@color/time</item>
-        <item name="colorPrimaryDark">@color/time</item>
-        <item name="colorAccent">@color/time</item>
+
+    <style name="DateDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorAccent">@color/background_color</item>
+        <item name="android:background">@color/button</item>
+        <item name="dialogCornerRadius">20dp</item>
     </style>
+
+    <style name="TimePickerDialogTheme" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/button</item>
+        <item name="android:timePickerStyle">@style/TimePickerDialogStyle</item>
+    </style>
+
+    <style name="TimePickerDialogStyle" parent="@android:style/Widget.Material.Light.TimePicker">
+
+        <item name="colorAccent">@color/background_color</item>
+
+        <item name="android:timePickerMode">clock</item>
+        <item name="android:headerBackground">@color/button</item>
+        <item name="android:headerTimeTextAppearance">@style/TextAppearance.TimePickerDialogStyle.TimeLabel</item>
+        <item name="titleTextColor">@color/button</item>
+        <item name="android:numbersTextColor">@color/black</item>
+        <item name="android:numbersSelectorColor">@color/background_color</item>
+        <item name="android:numbersBackgroundColor">@color/button</item>
+
+    </style>
+
+    <style name="TextAppearance.TimePickerDialogStyle.TimeLabel" parent="@android:style/TextAppearance.Material">
+
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/background_color</item>
+
+    </style>
+
+<!--    <style name="TimeDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">-->
+<!--        <item name="colorAccent">@color/background_color</item>-->
+<!--        <item name="android:background">@color/button</item>-->
+<!--        <item name="dialogCornerRadius">20dp</item>-->
+<!--        <item name="android:numbersTextColor">@color/button</item>-->
+<!--        <item name="android:numbersSelectorColor">@color/button</item>-->
+<!--        <item name="android:numbersBackgroundColor">@color/button</item>-->
+<!--    </style>-->
 </resources>

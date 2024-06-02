@@ -18,37 +18,18 @@ public class RecordInitDto {
     @SerializedName("endDate")
     public String endDate;
     @SerializedName("depth")
-    public int depth;
+    public long depth;
 
-    public RecordInitDto(@Nullable String placeName, @Nullable String date, @Nullable String startDate, @Nullable String endDate, int depth) {
+    @Nullable
+    @SerializedName("userId")
+    public UserDto user;
+
+    public RecordInitDto(@Nullable String placeName, @Nullable String date, @Nullable String startDate, @Nullable String endDate, long depth, @Nullable UserDto user) {
         this.placeName = placeName;
         this.date = date;
         this.startDate = startDate;
         this.endDate = endDate;
         this.depth = depth;
-    }
-
-    @Nullable
-    public String getPlaceName() {
-        return placeName;
-    }
-
-    @Nullable
-    public String getDate() {
-        return date;
-    }
-
-    @Nullable
-    public String getStartDate() {
-        return startDate;
-    }
-
-    @Nullable
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public int getDepth() {
-        return depth;
+        this.user = user;
     }
 }

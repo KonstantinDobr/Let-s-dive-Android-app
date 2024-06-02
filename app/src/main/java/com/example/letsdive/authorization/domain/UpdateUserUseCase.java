@@ -3,6 +3,8 @@ package com.example.letsdive.authorization.domain;
 import androidx.annotation.NonNull;
 
 import com.example.letsdive.authorization.domain.entities.FullUserEntity;
+import com.example.letsdive.authorization.domain.entities.PlaceEntity;
+import com.example.letsdive.authorization.domain.entities.RecordEntity;
 import com.example.letsdive.authorization.domain.entities.Status;
 
 import java.util.Set;
@@ -17,15 +19,13 @@ public class UpdateUserUseCase {
 
     public void execute(
             @NonNull String id,
-            @NonNull String username,
-            @NonNull String photoUrl,
-            @NonNull Set<Long> records,
-            @NonNull Consumer<Status<Void>> callback) {
-        repo.updateUser(
-                id,
-                username,
-                photoUrl,
-                records,
+            @NonNull String email,
+            @NonNull String information,
+            @NonNull Consumer<Status<FullUserEntity>> callback
+    ) {
+        repo.update(id,
+                email,
+                information,
                 callback);
     }
 }

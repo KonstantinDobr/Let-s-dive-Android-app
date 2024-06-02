@@ -53,4 +53,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.picasso)
     runtimeOnly(libs.material.v130alpha02)
+
+    implementation(libs.core)
+
+    annotationProcessor(libs.compiler)
+    implementation(libs.play.services.maps)
+
 }

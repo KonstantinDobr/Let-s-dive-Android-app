@@ -13,17 +13,21 @@ public class UserDto {
     @Nullable
     @SerializedName("username")
     public String username;
+
+    @Nullable
+    @SerializedName("email")
+    public String email;
+
+    @Nullable
+    @SerializedName("information")
+    public String information;
     @Nullable
     @SerializedName("photoUrl")
     public String photoUrl;
     @Nullable
     @SerializedName("records")
-    public Set<Long> records;
-
-    public UserDto(@Nullable String id, @Nullable String username, @Nullable String photoUrl, @Nullable Set<Long> records) {
-        this.id = id;
-        this.username = username;
-        this.photoUrl = photoUrl;
-        this.records = records;
-    }
+    public Set<RecordDto> records;
+    @Nullable
+    @SerializedName("places")
+    public Set<PlaceDto> places;
 }

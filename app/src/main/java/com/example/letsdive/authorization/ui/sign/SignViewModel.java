@@ -108,7 +108,7 @@ public class SignViewModel extends ViewModel {
             if (status.getStatusCode() == 200 && status.getErrors() == null) {
                 mutableOpenLiveData.postValue(status.getValue());
             } else {
-                mutableErrorLiveData.postValue("Something wrong");
+                mutableErrorLiveData.postValue("Wrong password");
             }
         });
     }

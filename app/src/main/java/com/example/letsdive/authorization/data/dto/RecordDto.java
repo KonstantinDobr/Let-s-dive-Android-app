@@ -21,5 +21,9 @@ public class RecordDto {
     @SerializedName("endDate")
     public String endDate;
     @SerializedName("depth")
-    public int depth;
+    public long depth;
+
+    @Nullable
+    @SerializedName("userId")
+    public UserDto user;
 }

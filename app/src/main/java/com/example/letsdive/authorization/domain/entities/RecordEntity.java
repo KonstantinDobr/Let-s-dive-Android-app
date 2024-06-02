@@ -1,20 +1,20 @@
 package com.example.letsdive.authorization.domain.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class RecordEntity {
     @NonNull
-    public String id;
+    private final String id;
     @NonNull
-    public String placeName;
+    private final String placeName;
     @NonNull
-    public String date;
+    private final String date;
     @NonNull
-    public String startDate;
+    private final String startDate;
     @NonNull
-    public String endDate;
-    @NonNull
-    public int depth;
+    private final String endDate;
+    private final long depth;
 
     public RecordEntity(
             @NonNull String id,
@@ -22,7 +22,7 @@ public class RecordEntity {
             @NonNull String date,
             @NonNull String startDate,
             @NonNull String endDate,
-            @NonNull int depth
+            long depth
     ) {
         this.id = id;
         this.placeName = placeName;
@@ -57,8 +57,7 @@ public class RecordEntity {
         return endDate;
     }
 
-    @NonNull
-    public int getDepth() {
+    public long getDepth() {
         return depth;
     }
 }

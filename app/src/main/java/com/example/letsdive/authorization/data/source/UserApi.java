@@ -23,6 +23,19 @@ public interface UserApi {
     Call<Void> register(@Body AccountDto dto);
     @GET("server/v1/user/login")
     Call<UserDto> login();
-    @PUT("server/v1/user/{id}")
-    Call<Void> update(@Path("id") String id, @Body UserDto userDto);
+
+    @PUT("server/v1/user/record/{userId}/{recordId}")
+    Call<UserDto> addRecord(@Path("userId") String userId, @Path("recordId") String recordId);
+
+    @PUT("server/v1/user/place/{userId}/{placeId}")
+    Call<UserDto> addPlace(@Path("userId") String userId, @Path("placeId") String placeId);
+
+    @PUT("server/v1/user/place/delete/{userId}/{placeId}")
+    Call<UserDto> deletePlace(@Path("userId") String userId, @Path("placeId") String placeId);
+
+    @GET("/server/v1/user/username/{username}")
+    Call<UserDto> getByUsername(@Path("username") String username);
+
+    @PUT("server/v1/user/update/{id}/{email}")
+    Call<UserDto> update(@Path("id") String id, @Path("email") String email, @Body String info);
 }
