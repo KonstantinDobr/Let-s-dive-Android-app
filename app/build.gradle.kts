@@ -57,6 +57,10 @@ dependencies {
     implementation(libs.core)
 
     annotationProcessor(libs.compiler)
+    implementation(libs.firebase.ui.storage)
+    implementation(libs.firebase.bom)
+    implementation("com.google.firebase:firebase-analytics")
+
     implementation(libs.play.services.maps)
 
 }
