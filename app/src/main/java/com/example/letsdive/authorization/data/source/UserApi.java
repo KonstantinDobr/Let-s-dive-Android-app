@@ -1,6 +1,7 @@
 package com.example.letsdive.authorization.data.source;
 
 import com.example.letsdive.authorization.data.dto.AccountDto;
+import com.example.letsdive.authorization.data.dto.Container;
 import com.example.letsdive.authorization.data.dto.UserDto;
 
 import java.util.List;
@@ -36,6 +37,6 @@ public interface UserApi {
     @GET("/server/v1/user/username/{username}")
     Call<UserDto> getByUsername(@Path("username") String username);
 
-    @PUT("server/v1/user/update/{id}/{email}")
-    Call<UserDto> update(@Path("id") String id, @Path("email") String email, @Body String info);
+    @PUT("server/v1/user/update/{id}")
+    Call<UserDto> update(@Path("id") String id, @Body Container container);
 }

@@ -54,7 +54,7 @@ public class FriendsFragment extends Fragment {
                         }
                     }
                     UserAdapter adapter = new UserAdapter(users, context, user);
-                    SpacingItemDecorator itemDecorator = new SpacingItemDecorator(35, 35);
+                    SpacingItemDecorator itemDecorator = new SpacingItemDecorator(35, 35, 35);
                     binding.rvUsers.addItemDecoration(itemDecorator);
                     binding.rvUsers.setAdapter(adapter);
         });

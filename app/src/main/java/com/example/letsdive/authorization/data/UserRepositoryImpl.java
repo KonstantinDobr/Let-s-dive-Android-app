@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.letsdive.authorization.data.dto.AccountDto;
+import com.example.letsdive.authorization.data.dto.Container;
 import com.example.letsdive.authorization.data.dto.PlaceDto;
 import com.example.letsdive.authorization.data.dto.RecordDto;
 import com.example.letsdive.authorization.data.dto.UserDto;
@@ -422,8 +423,8 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
     }
 
     @Override
-    public void update(@NonNull String id, @NonNull String email, @NonNull String information, @NonNull Consumer<Status<FullUserEntity>> callback) {
-        userApi.update(id, email, information).enqueue(new CallToConsumer<>(
+    public void update(@NonNull String id, @NonNull String email, @NonNull String information, @NonNull String photoUrl, @NonNull Consumer<Status<FullUserEntity>> callback) {
+        userApi.update(id, new Container(email, information, photoUrl)).enqueue(new CallToConsumer<>(
                 callback,
                 user -> {
                     {

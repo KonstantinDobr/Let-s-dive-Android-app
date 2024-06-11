@@ -21,11 +21,13 @@ public class UpdateUserUseCase {
             @NonNull String id,
             @NonNull String email,
             @NonNull String information,
+            @NonNull String photoUrl,
             @NonNull Consumer<Status<FullUserEntity>> callback
     ) {
         repo.update(id,
                 email,
                 information,
+                photoUrl,
                 callback);
     }
 }

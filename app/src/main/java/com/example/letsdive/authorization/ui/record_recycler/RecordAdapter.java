@@ -24,7 +24,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     public RecordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         ItemRecordBinding binding = ItemRecordBinding.inflate(
-                LayoutInflater.from(parent.getContext())
+                LayoutInflater.from(parent.getContext()), parent, false
         );
 
         return new RecordViewHolder(binding);

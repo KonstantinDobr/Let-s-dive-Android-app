@@ -17,7 +17,18 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
     public void bind(RecordEntity item) {
         binding.tvDate.setText("Дата: " + item.getDate());
         binding.tvTime.setText("Время: " + item.getStartDate() + " - " + item.getEndDate());
-        binding.tvPlace.setText("Место погружения: " + item.getPlaceName());
-        binding.tvDepth.setText("Глубина погружения: " + String.valueOf(item.getDepth()));
+        binding.tvPlace.setText(item.getPlaceName());
+        long depth = item.getDepth();
+        String end = "";
+        if (depth % 100 >= 10 && depth % 100 <= 20) {
+            end = "метров";
+        } else if (depth % 10 == 1) {
+            end = "метр";
+        } else if (depth % 10 >= 2 && depth % 10 <= 4){
+            end = "метра";
+        } else {
+            end = "метров";
+        }
+        binding.tvDepth.setText("Глубина погружения " + String.valueOf(item.getDepth()) + " " + end);
     }
 }

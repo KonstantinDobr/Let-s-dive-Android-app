@@ -23,4 +23,5 @@
     <string name="email_label">Почта</string>
     <string name="email">Какая-то почта</string>
     <string name="users_label">Пользователи</string>
+    <string name="username_example">Костя Снастин</string>
 </resources>

@@ -47,4 +47,8 @@
 <!--        <item name="android:numbersSelectorColor">@color/button</item>-->
 <!--        <item name="android:numbersBackgroundColor">@color/button</item>-->
 <!--    </style>-->
+    
+<!--    <style name="ThemeOverlay.MaterialComponents.Toolbar.Title">-->
+<!--        <item name="android:textColor">@color/background_color</item>-->
+<!--    </style>-->
 </resources>
