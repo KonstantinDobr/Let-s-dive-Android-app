@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -58,9 +59,11 @@ dependencies {
 
     annotationProcessor(libs.compiler)
     implementation(libs.firebase.ui.storage)
-    implementation(libs.firebase.bom)
+    implementation(libs.firebase.bom.v3310)
     implementation("com.google.firebase:firebase-analytics")
 
     implementation(libs.play.services.maps)
+
+    implementation(libs.androidx.coordinatorlayout)
 
 }

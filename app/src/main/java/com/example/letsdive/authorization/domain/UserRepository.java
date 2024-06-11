@@ -31,6 +31,7 @@ public interface UserRepository {
             @NonNull String id,
             @NonNull String email,
             @NonNull String information,
+            @NonNull String photoUrl,
             @NonNull Consumer<Status<FullUserEntity>> callback
     );
 }

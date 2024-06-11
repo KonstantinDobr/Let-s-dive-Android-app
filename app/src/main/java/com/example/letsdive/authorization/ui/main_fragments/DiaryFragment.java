@@ -80,7 +80,7 @@ public class DiaryFragment extends Fragment {
         List<RecordEntity> records = new ArrayList<>(setRecords);
         RecordAdapter adapter = new RecordAdapter(records);
         this.adapter = adapter;
-        SpacingItemDecorator itemDecorator = new SpacingItemDecorator(35, 35);
+        SpacingItemDecorator itemDecorator = new SpacingItemDecorator(35, 35, 35);
         binding.rvRecord.addItemDecoration(itemDecorator);
         binding.rvRecord.setAdapter(adapter);
     }

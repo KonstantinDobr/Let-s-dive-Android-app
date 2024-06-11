@@ -12,7 +12,8 @@
         android:id="@+id/iv_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:src="@drawable/profile_image"/>
 
     <TextView

@@ -4,18 +4,22 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.letsdive.R;
 import com.example.letsdive.authorization.data.RecordRepositoryImpl;
 import com.example.letsdive.authorization.data.RelationshipRepositoryImpl;
@@ -32,6 +36,8 @@ import com.example.letsdive.databinding.ItemUserBinding;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 import java.util.Set;
@@ -63,7 +69,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemUserBinding binding = ItemUserBinding.inflate(
-                LayoutInflater.from(parent.getContext())
+                LayoutInflater.from(parent.getContext()), parent, false
         );
 
         return new UserViewHolder(binding);
@@ -156,11 +162,28 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
                     dialogWindow.setCancelable(true);
                     dialogWindow.setContentView(R.layout.dialog_user_card);
 
+                    ImageView backgroundImageView = (ImageView) dialogWindow.findViewById(R.id.iv_back);
                     TextView usernameTextView = (TextView) dialogWindow.findViewById(R.id.tv_username);
                     TextView emailTextView = (TextView) dialogWindow.findViewById(R.id.tv_email);
                     TextView infoTextView = (TextView) dialogWindow.findViewById(R.id.tv_info);
 
+                    if (user.getPhotoUrl() != null && !user.getPhotoUrl().isEmpty()) {
+                        try {
+                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance("gs://lets-dive-422118.appspot.com");
+                            StorageReference reference = firebaseStorage.getReference(user.getPhotoUrl());
+                            Glide
+                                    .with(context)
+                                    .load(reference)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .into(backgroundImageView);
+                        } catch (Error e) {
+                            Log.e("FireBase", "PathToFirebase error");
+                        }
+                    }
+
                     usernameTextView.setText(user.getUsername());
+
                     if (user.getEmail() != null && !user.getEmail().isEmpty()) {
                         emailTextView.setText(user.getEmail());
                     }

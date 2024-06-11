@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "212542464102",
+    "project_id": "lets-dive-422118",
+    "storage_bucket": "lets-dive-422118.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212542464102:android:42c39201cfdff3766acda7",
+        "android_client_info": {
+          "package_name": "com.example.letsdive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC6RsvsT5wZK4Ba6jL3_YELAURrszllgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
