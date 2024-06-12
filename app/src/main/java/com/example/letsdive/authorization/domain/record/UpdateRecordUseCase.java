@@ -5,18 +5,18 @@ import androidx.annotation.NonNull;
 import com.example.letsdive.authorization.data.RecordRepositoryImpl;
 import com.example.letsdive.authorization.domain.entities.RecordEntity;
 import com.example.letsdive.authorization.domain.entities.Status;
-import com.example.letsdive.authorization.domain.sign.SignUserRepository;
 
 import java.util.function.Consumer;
 
-public class AddRecordUseCase {
+public class UpdateRecordUseCase {
     private final RecordRepositoryImpl repo;
 
-    public AddRecordUseCase(RecordRepositoryImpl repo) {
+    public UpdateRecordUseCase(RecordRepositoryImpl repo) {
         this.repo = repo;
     }
 
     public void execute(
+            @NonNull String id,
             @NonNull String placeName,
             @NonNull String date,
             @NonNull String startDate,
@@ -25,7 +25,8 @@ public class AddRecordUseCase {
             long depth,
             Consumer<Status<RecordEntity>> callback
     ) {
-        repo.createRecord(
+        repo.updateRecord(
+                id,
                 placeName,
                 date,
                 startDate,

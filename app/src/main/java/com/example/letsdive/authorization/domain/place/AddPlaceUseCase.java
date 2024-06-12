@@ -22,6 +22,8 @@ public class AddPlaceUseCase {
             @NonNull String information,
             double latitude,
             double longitude,
+            @NonNull String recordId,
+            long depth,
             Consumer<Status<PlaceEntity>> callback
     ) {
         repo.createPlace(
@@ -29,6 +31,8 @@ public class AddPlaceUseCase {
                 information,
                 latitude,
                 longitude,
+                recordId,
+                depth,
                 callback
         );
     }

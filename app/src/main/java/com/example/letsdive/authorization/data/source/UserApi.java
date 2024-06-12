@@ -2,6 +2,7 @@ package com.example.letsdive.authorization.data.source;
 
 import com.example.letsdive.authorization.data.dto.AccountDto;
 import com.example.letsdive.authorization.data.dto.Container;
+import com.example.letsdive.authorization.data.dto.RecordDto;
 import com.example.letsdive.authorization.data.dto.UserDto;
 
 import java.util.List;
@@ -26,7 +27,10 @@ public interface UserApi {
     Call<UserDto> login();
 
     @PUT("server/v1/user/record/{userId}/{recordId}")
-    Call<UserDto> addRecord(@Path("userId") String userId, @Path("recordId") String recordId);
+    Call<RecordDto> addRecord(@Path("userId") String userId, @Path("recordId") String recordId);
+
+    @PUT("server/v1/user/record/delete/{userId}/{recordId}")
+    Call<UserDto> deleteRecord(@Path("userId") String userId, @Path("recordId") String recordId);
 
     @PUT("server/v1/user/place/{userId}/{placeId}")
     Call<UserDto> addPlace(@Path("userId") String userId, @Path("placeId") String placeId);

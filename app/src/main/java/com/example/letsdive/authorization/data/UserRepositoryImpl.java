@@ -77,12 +77,14 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         final String date = recordDto.date;
                         final String startDate = recordDto.startDate;
                         final String endDate = recordDto.endDate;
+                        final String information = recordDto.information;
                         if (
                                 recordId != null &&
                                         placeName != null &&
                                         date != null &&
                                         startDate != null &&
-                                        endDate != null
+                                        endDate != null &&
+                                        information != null
                         ) {
                             resultRecords.add(new RecordEntity(
                                     recordId,
@@ -90,6 +92,7 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                     date,
                                     startDate,
                                     endDate,
+                                    information,
                                     recordDto.depth
                             ));
                         }
@@ -100,18 +103,22 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         final String placeId = placeDto.id;
                         final String placePlaceName = placeDto.placeName;
                         final String placeInformation = placeDto.information;
+                        final String recordInf = placeDto.recordId;
 
                         if (
                                 placeId != null &&
                                         placePlaceName != null &&
-                                        placeInformation != null
+                                        placeInformation != null&&
+                                        recordInf != null
                         ) {
                             resultPlaces.add(new PlaceEntity(
                                     placeId,
                                     placePlaceName,
                                     placeInformation,
                                     placeDto.latitude,
-                                    placeDto.longitude
+                                    placeDto.longitude,
+                                    recordInf,
+                                    placeDto.depth
                             ));
                         }
                     }
@@ -135,27 +142,64 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
     }
 
     @Override
-    public void addRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<FullUserEntity>> callback) {
+    public void addRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<RecordEntity>> callback) {
         userApi.addRecord(userId, recordId).enqueue(new CallToConsumer<>(
                 callback,
-                user -> {
-                    if (user == null) return null;
-                    final String resultId = user.id;
-                    final String username_login = user.username;
+                recordDto -> {
+                    final String resultId = recordDto.id;
+                    final String resultPlaceName = recordDto.placeName;
+                    final String resultDate = recordDto.date;
+                    final String resultStartDate = recordDto.startDate;
+                    final String resultEndDate = recordDto.endDate;
+                    final String resultInformation = recordDto.information;
+                    if (
+                            resultId != null &&
+                                    resultPlaceName != null &&
+                                    resultDate != null &&
+                                    resultStartDate != null &&
+                                    resultEndDate != null &&
+                                    resultInformation != null
+                    ) {
+                        return new RecordEntity(
+                                resultId,
+                                resultPlaceName,
+                                resultDate,
+                                resultStartDate,
+                                resultEndDate,
+                                resultInformation,
+                                recordDto.depth
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+        ));
+    }
 
-                    Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
-                    for (RecordDto recordDto : user.records) {
+    @Override
+    public void deleteRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<FullUserEntity>> callback) {
+        userApi.deleteRecord(userId, recordId).enqueue(new CallToConsumer<>(
+                callback,
+                userDto -> {
+                    if (userDto == null) return null;
+                    final String resultId = userDto.id;
+                    final String username_login = userDto.username;
+
+                    Set<RecordEntity> resultRecords = new HashSet<>(userDto.records.size());
+                    for (RecordDto recordDto : userDto.records) {
                         final String listRecordId = recordDto.id;
                         final String placeName = recordDto.placeName;
                         final String date = recordDto.date;
                         final String startDate = recordDto.startDate;
                         final String endDate = recordDto.endDate;
+                        final String information = recordDto.information;
                         if (
                                 listRecordId != null &&
                                         placeName != null &&
                                         date != null &&
                                         startDate != null &&
-                                        endDate != null
+                                        endDate != null &&
+                                        information != null
                         ) {
                             resultRecords.add(new RecordEntity(
                                     listRecordId,
@@ -163,28 +207,33 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                     date,
                                     startDate,
                                     endDate,
+                                    information,
                                     recordDto.depth
                             ));
                         }
                     }
 
-                    Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
-                    for (PlaceDto placeDto : user.places) {
+                    Set<PlaceEntity> resultPlaces = new HashSet<>(userDto.places.size());
+                    for (PlaceDto placeDto : userDto.places) {
                         final String placeId = placeDto.id;
                         final String placePlaceName = placeDto.placeName;
                         final String placeInformation = placeDto.information;
+                        final String recordInf = placeDto.recordId;
 
                         if (
                                 placeId != null &&
                                         placePlaceName != null &&
-                                        placeInformation != null
+                                        placeInformation != null&&
+                                        recordInf != null
                         ) {
                             resultPlaces.add(new PlaceEntity(
                                     placeId,
                                     placePlaceName,
                                     placeInformation,
                                     placeDto.latitude,
-                                    placeDto.longitude
+                                    placeDto.longitude,
+                                    recordInf,
+                                    placeDto.depth
                             ));
                         }
                     }
@@ -193,9 +242,9 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         return new FullUserEntity(
                                 resultId,
                                 username_login,
-                                user.photoUrl,
-                                user.email,
-                                user.information,
+                                userDto.photoUrl,
+                                userDto.email,
+                                userDto.information,
                                 resultRecords,
                                 resultPlaces
                         );
@@ -222,12 +271,14 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         final String date = recordDto.date;
                         final String startDate = recordDto.startDate;
                         final String endDate = recordDto.endDate;
+                        final String information = recordDto.information;
                         if (
                                 listRecordId != null &&
                                         placeName != null &&
                                         date != null &&
                                         startDate != null &&
-                                        endDate != null
+                                        endDate != null &&
+                                        information != null
                         ) {
                             resultRecords.add(new RecordEntity(
                                     listRecordId,
@@ -235,6 +286,7 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                     date,
                                     startDate,
                                     endDate,
+                                    information,
                                     recordDto.depth
                             ));
                         }
@@ -245,18 +297,22 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         final String listPlaceId = placeDto.id;
                         final String placePlaceName = placeDto.placeName;
                         final String placeInformation = placeDto.information;
+                        final String recordInf = placeDto.recordId;
 
                         if (
                                 listPlaceId != null &&
                                         placePlaceName != null &&
-                                        placeInformation != null
+                                        placeInformation != null&&
+                                        recordInf != null
                         ) {
                             resultPlaces.add(new PlaceEntity(
                                     listPlaceId,
                                     placePlaceName,
                                     placeInformation,
                                     placeDto.latitude,
-                                    placeDto.longitude
+                                    placeDto.longitude,
+                                    recordInf,
+                                    placeDto.depth
                             ));
                         }
                     }
@@ -294,12 +350,14 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         final String date = recordDto.date;
                         final String startDate = recordDto.startDate;
                         final String endDate = recordDto.endDate;
+                        final String information = recordDto.information;
                         if (
                                 listRecordId != null &&
                                         placeName != null &&
                                         date != null &&
                                         startDate != null &&
-                                        endDate != null
+                                        endDate != null &&
+                                        information != null
                         ) {
                             resultRecords.add(new RecordEntity(
                                     listRecordId,
@@ -307,6 +365,7 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                                     date,
                                     startDate,
                                     endDate,
+                                    information,
                                     recordDto.depth
                             ));
                         }
@@ -317,18 +376,22 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
                         final String listPlaceId = placeDto.id;
                         final String placePlaceName = placeDto.placeName;
                         final String placeInformation = placeDto.information;
+                        final String recordInf = placeDto.recordId;
 
                         if (
                                 listPlaceId != null &&
                                         placePlaceName != null &&
-                                        placeInformation != null
+                                        placeInformation != null&&
+                                        recordInf != null
                         ) {
                             resultPlaces.add(new PlaceEntity(
                                     listPlaceId,
                                     placePlaceName,
                                     placeInformation,
                                     placeDto.latitude,
-                                    placeDto.longitude
+                                    placeDto.longitude,
+                                    recordInf,
+                                    placeDto.depth
                             ));
                         }
                     }
@@ -361,24 +424,27 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
 
                     Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
                     for (RecordDto recordDto : user.records) {
-                        final String recordId = recordDto.id;
+                        final String listRecordId = recordDto.id;
                         final String placeName = recordDto.placeName;
                         final String date = recordDto.date;
                         final String startDate = recordDto.startDate;
                         final String endDate = recordDto.endDate;
+                        final String information = recordDto.information;
                         if (
-                                recordId != null &&
+                                listRecordId != null &&
                                         placeName != null &&
                                         date != null &&
                                         startDate != null &&
-                                        endDate != null
+                                        endDate != null &&
+                                        information != null
                         ) {
                             resultRecords.add(new RecordEntity(
-                                    recordId,
+                                    listRecordId,
                                     placeName,
                                     date,
                                     startDate,
                                     endDate,
+                                    information,
                                     recordDto.depth
                             ));
                         }
@@ -386,21 +452,25 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
 
                     Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
                     for (PlaceDto placeDto : user.places) {
-                        final String placeId = placeDto.id;
+                        final String listPlaceId = placeDto.id;
                         final String placePlaceName = placeDto.placeName;
                         final String placeInformation = placeDto.information;
+                        final String recordInf = placeDto.recordId;
 
                         if (
-                                placeId != null &&
+                                listPlaceId != null &&
                                         placePlaceName != null &&
-                                        placeInformation != null
+                                        placeInformation != null&&
+                                        recordInf != null
                         ) {
                             resultPlaces.add(new PlaceEntity(
-                                    placeId,
+                                    listPlaceId,
                                     placePlaceName,
                                     placeInformation,
                                     placeDto.latitude,
-                                    placeDto.longitude
+                                    placeDto.longitude,
+                                    recordInf,
+                                    placeDto.depth
                             ));
                         }
                     }
@@ -434,24 +504,27 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
 
                         Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
                         for (RecordDto recordDto : user.records) {
-                            final String recordId = recordDto.id;
+                            final String listRecordId = recordDto.id;
                             final String placeName = recordDto.placeName;
                             final String date = recordDto.date;
                             final String startDate = recordDto.startDate;
                             final String endDate = recordDto.endDate;
+                            final String RecordInformation = recordDto.information;
                             if (
-                                    recordId != null &&
+                                    listRecordId != null &&
                                             placeName != null &&
                                             date != null &&
                                             startDate != null &&
-                                            endDate != null
+                                            endDate != null &&
+                                            RecordInformation != null
                             ) {
                                 resultRecords.add(new RecordEntity(
-                                        recordId,
+                                        listRecordId,
                                         placeName,
                                         date,
                                         startDate,
                                         endDate,
+                                        RecordInformation,
                                         recordDto.depth
                                 ));
                             }
@@ -459,21 +532,25 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
 
                         Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
                         for (PlaceDto placeDto : user.places) {
-                            final String placeId = placeDto.id;
+                            final String listPlaceId = placeDto.id;
                             final String placePlaceName = placeDto.placeName;
                             final String placeInformation = placeDto.information;
+                            final String recordInf = placeDto.recordId;
 
                             if (
-                                    placeId != null &&
+                                    listPlaceId != null &&
                                             placePlaceName != null &&
-                                            placeInformation != null
+                                            placeInformation != null&&
+                                            recordInf != null
                             ) {
                                 resultPlaces.add(new PlaceEntity(
-                                        placeId,
+                                        listPlaceId,
                                         placePlaceName,
                                         placeInformation,
                                         placeDto.latitude,
-                                        placeDto.longitude
+                                        placeDto.longitude,
+                                        recordInf,
+                                        placeDto.depth
                                 ));
                             }
                         }
@@ -525,24 +602,27 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
 
                     Set<RecordEntity> resultRecords = new HashSet<>(user.records.size());
                     for (RecordDto recordDto : user.records) {
-                        final String recordId = recordDto.id;
+                        final String listRecordId = recordDto.id;
                         final String placeName = recordDto.placeName;
                         final String date = recordDto.date;
                         final String startDate = recordDto.startDate;
                         final String endDate = recordDto.endDate;
+                        final String RecordInformation = recordDto.information;
                         if (
-                                recordId != null &&
+                                listRecordId != null &&
                                         placeName != null &&
                                         date != null &&
                                         startDate != null &&
-                                        endDate != null
+                                        endDate != null &&
+                                        RecordInformation != null
                         ) {
                             resultRecords.add(new RecordEntity(
-                                    recordId,
+                                    listRecordId,
                                     placeName,
                                     date,
                                     startDate,
                                     endDate,
+                                    RecordInformation,
                                     recordDto.depth
                             ));
                         }
@@ -550,21 +630,25 @@ public class UserRepositoryImpl implements UserRepository, SignUserRepository {
 
                     Set<PlaceEntity> resultPlaces = new HashSet<>(user.places.size());
                     for (PlaceDto placeDto : user.places) {
-                        final String placeId = placeDto.id;
+                        final String listPlaceId = placeDto.id;
                         final String placePlaceName = placeDto.placeName;
                         final String placeInformation = placeDto.information;
+                        final String recordInf = placeDto.recordId;
 
                         if (
-                                placeId != null &&
+                                listPlaceId != null &&
                                         placePlaceName != null &&
-                                        placeInformation != null
+                                        placeInformation != null&&
+                                        recordInf != null
                         ) {
                             resultPlaces.add(new PlaceEntity(
-                                    placeId,
+                                    listPlaceId,
                                     placePlaceName,
                                     placeInformation,
                                     placeDto.latitude,
-                                    placeDto.longitude
+                                    placeDto.longitude,
+                                    recordInf,
+                                    placeDto.depth
                             ));
                         }
                     }

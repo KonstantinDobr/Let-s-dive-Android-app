@@ -33,6 +33,8 @@ public class PlaceRepositoryImpl implements PlaceRepository {
             @NonNull String information,
             double latitude,
             double longitude,
+            @NonNull String recordId,
+            long depth,
             Consumer<Status<PlaceEntity>> callback
     ) {
         placeApi.createPlace(new PlaceInitDto(
@@ -40,6 +42,8 @@ public class PlaceRepositoryImpl implements PlaceRepository {
                 information,
                 latitude,
                 longitude,
+                recordId,
+                depth,
                 null
         )).enqueue(new CallToConsumer<>(
                 callback,
@@ -58,7 +62,9 @@ public class PlaceRepositoryImpl implements PlaceRepository {
                                 resultPlaceName,
                                 resultInformation,
                                 placeDto.latitude,
-                                placeDto.longitude
+                                placeDto.longitude,
+                                recordId,
+                                placeDto.depth
                         );
                     } else {
                         return null;
@@ -78,6 +84,8 @@ public class PlaceRepositoryImpl implements PlaceRepository {
             @NonNull String information,
             double latitude,
             double longitude,
+            @NonNull String recordId,
+            long depth,
             Consumer<Status<PlaceEntity>> callback
     ) {
         placeApi.updatePlace(id, new PlaceInitDto(
@@ -85,6 +93,8 @@ public class PlaceRepositoryImpl implements PlaceRepository {
                 information,
                 latitude,
                 longitude,
+                recordId,
+                depth,
                 null
         )).enqueue(new CallToConsumer<>(
                 callback,
@@ -93,25 +103,29 @@ public class PlaceRepositoryImpl implements PlaceRepository {
     }
 
     @Override
-    public void getByPlaceName(@NonNull String placeName, Consumer<Status<PlaceEntity>> callback) {
-        placeApi.getByPlaceName(placeName).enqueue(new CallToConsumer<>(
+    public void getByPlaceName(@NonNull String placeName, @NonNull String userId, Consumer<Status<PlaceEntity>> callback) {
+        placeApi.getByPlaceName(placeName, userId).enqueue(new CallToConsumer<>(
                 callback,
                 placeDto -> {
                     final String resultId = placeDto.id;
                     final String resultPlaceName = placeDto.placeName;
                     final String resultInformation = placeDto.information;
+                    final String recordId = placeDto.recordId;
 
                     if (
                             resultId != null &&
                                     resultPlaceName != null &&
-                                    resultInformation != null
+                                    resultInformation != null&&
+                                    recordId != null
                     ) {
                         return new PlaceEntity(
                                 resultId,
                                 resultPlaceName,
                                 resultInformation,
                                 placeDto.latitude,
-                                placeDto.longitude
+                                placeDto.longitude,
+                                recordId,
+                                placeDto.depth
                         );
                     } else {
                         return null;

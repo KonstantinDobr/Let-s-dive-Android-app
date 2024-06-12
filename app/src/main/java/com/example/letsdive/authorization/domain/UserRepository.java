@@ -19,7 +19,9 @@ public interface UserRepository {
 
     void getUser(@NonNull String id, @NonNull Consumer<Status<FullUserEntity>> callback);
 
-    void addRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<FullUserEntity>> callback);
+    void addRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<RecordEntity>> callback);
+
+    void deleteRecord(@NonNull String userId, @NonNull String recordId, @NonNull Consumer<Status<FullUserEntity>> callback);
 
     void addPlace(@NonNull String userId, @NonNull String placeId, @NonNull Consumer<Status<FullUserEntity>> callback);
 

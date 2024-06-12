@@ -20,6 +20,10 @@ public class RecordDto {
     @Nullable
     @SerializedName("endDate")
     public String endDate;
+
+    @Nullable
+    @SerializedName("information")
+    public String information;
     @SerializedName("depth")
     public long depth;
 

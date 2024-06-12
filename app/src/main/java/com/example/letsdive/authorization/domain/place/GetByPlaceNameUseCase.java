@@ -14,7 +14,7 @@ public class GetByPlaceNameUseCase {
         this.repo = repo;
     }
 
-    public void execute(@NonNull String placeName, @NonNull Consumer<Status<PlaceEntity>> callback) {
-        repo.getByPlaceName(placeName, callback);
+    public void execute(@NonNull String placeName, @NonNull String userId, @NonNull Consumer<Status<PlaceEntity>> callback) {
+        repo.getByPlaceName(placeName, userId, callback);
     }
 }

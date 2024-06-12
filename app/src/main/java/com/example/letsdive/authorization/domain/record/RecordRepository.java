@@ -14,9 +14,23 @@ public interface RecordRepository {
             @NonNull String date,
             @NonNull String startDate,
             @NonNull String endDate,
+            @NonNull String information,
             long depth,
             Consumer<Status<RecordEntity>> callback
     );
 
     void getRecord(@NonNull String id, @NonNull Consumer<Status<RecordEntity>> callback);
+
+    void deleteRecord(@NonNull String id, @NonNull Consumer<Status<Void>> callback);
+
+    void updateRecord(
+            @NonNull String id,
+            @NonNull String placeName,
+            @NonNull String date,
+            @NonNull String startDate,
+            @NonNull String endDate,
+            @NonNull String information,
+            long depth,
+            Consumer<Status<RecordEntity>> callback
+    );
 }
