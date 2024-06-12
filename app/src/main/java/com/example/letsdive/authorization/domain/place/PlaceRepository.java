@@ -13,6 +13,8 @@ public interface PlaceRepository {
             @NonNull String information,
             double latitude,
             double longitude,
+            @NonNull String recordId,
+            long depth,
             Consumer<Status<PlaceEntity>> callback
     );
 
@@ -24,10 +26,12 @@ public interface PlaceRepository {
             @NonNull String information,
             double latitude,
             double longitude,
+            @NonNull String recordId,
+            long depth,
             Consumer<Status<PlaceEntity>> callback
     );
 
-    void getByPlaceName(@NonNull String placeName, Consumer<Status<PlaceEntity>> callback);
+    void getByPlaceName(@NonNull String placeName, @NonNull String userId, Consumer<Status<PlaceEntity>> callback);
 
     void deletePlaceById(@NonNull String id, @NonNull Consumer<Status<Void>> callback);
 }

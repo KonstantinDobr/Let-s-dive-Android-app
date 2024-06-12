@@ -19,14 +19,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.letsdive.R;
 import com.example.letsdive.authorization.data.RecordRepositoryImpl;
 import com.example.letsdive.authorization.data.UserRepositoryImpl;
 import com.example.letsdive.authorization.domain.AddRecordToUserUseCase;
+import com.example.letsdive.authorization.domain.DeleteRecordFromUserUseCase;
 import com.example.letsdive.authorization.domain.entities.FullUserEntity;
 import com.example.letsdive.authorization.domain.entities.RecordEntity;
 import com.example.letsdive.authorization.domain.record.AddRecordUseCase;
+import com.example.letsdive.authorization.domain.record.DeleteRecordByIdUseCase;
 import com.example.letsdive.authorization.ui.record_recycler.RecordAdapter;
 import com.example.letsdive.authorization.ui.utils.SpacingItemDecorator;
 import com.example.letsdive.databinding.FragmentDiaryBinding;
@@ -37,20 +41,13 @@ import java.util.List;
 import java.util.Set;
 
 public class DiaryFragment extends Fragment {
-
     private FragmentDiaryBinding binding;
     private final FullUserEntity user;
 
-    private RecordAdapter adapter;
-
-    private String date;
-    private String startTime;
-    private String endTime;
-
-    private final AddRecordUseCase addRecordUseCase = new AddRecordUseCase(
+    private final DeleteRecordByIdUseCase deleteRecordByIdUseCase = new DeleteRecordByIdUseCase(
             RecordRepositoryImpl.getInstance()
     );
-    private final AddRecordToUserUseCase addRecordToUserUseCase = new AddRecordToUserUseCase(
+    private final DeleteRecordFromUserUseCase deleteRecordFromUserUseCase = new DeleteRecordFromUserUseCase(
             UserRepositoryImpl.getInstance()
     );
 
@@ -64,13 +61,6 @@ public class DiaryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentDiaryBinding.bind(view);
 
-        binding.faEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDateDialog();
-            }
-        });
-
         if (!user.getRecords().isEmpty()) {
             createAdapter(user.getRecords());
         }
@@ -78,140 +68,33 @@ public class DiaryFragment extends Fragment {
 
     private void createAdapter(Set<RecordEntity> setRecords) {
         List<RecordEntity> records = new ArrayList<>(setRecords);
-        RecordAdapter adapter = new RecordAdapter(records);
-        this.adapter = adapter;
+        RecordAdapter adapter = new RecordAdapter(records, getContext(), user);
         SpacingItemDecorator itemDecorator = new SpacingItemDecorator(35, 35, 35);
         binding.rvRecord.addItemDecoration(itemDecorator);
         binding.rvRecord.setAdapter(adapter);
-    }
-
-    private void openDateDialog() {
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog pickerDialog  = new DatePickerDialog(requireContext(), R.style.DateDialogTheme, new DatePickerDialog.OnDateSetListener() {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                String myYear = String.valueOf(year);
-                String myMonth = String.valueOf(month + 1);
-                String myDay = String.valueOf(dayOfMonth);
-
-                if (month < 9) {
-                    myMonth = '0' + myMonth;
-                }
-                if (dayOfMonth < 10) {
-                    myDay = '0' + myDay;
-                }
-
-                date = myDay + "-" + myMonth + "-" + myYear;
-                openTimeDialog(true);
-            }
-        }, year, month, dayOfMonth);
-
-        pickerDialog.show();
-    }
-
-    private void openTimeDialog(boolean is_startTime) {
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-
-        TimePickerDialog pickerDialog = new TimePickerDialog(getContext(), R.style.TimePickerDialogTheme, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                String myHour = String.valueOf(hourOfDay);
-                String myMinute = String.valueOf(minute);
-
-                if (hourOfDay < 10) {
-                    myHour = '0' + myHour;
-                }
-                if (minute < 10) {
-                    myMinute = '0' + myMinute;
-                }
-
-                String time = myHour + ":" + myMinute;
-                if (is_startTime) {
-                    startTime = time;
-                    openTimeDialog(false);
-                } else {
-                    endTime = time;
-                    openInputDialog();
-                }
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
             }
 
-        }, hour, minute, false);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.title, null);
-        TextView title = (TextView) dialogView.findViewById(R.id.tv_title);
-
-        if (is_startTime) {
-            title.setText("Начало погружения");
-        } else {
-            title.setText("Конец погружения");
-        }
-
-
-        pickerDialog.setCustomTitle(dialogView);
-
-        pickerDialog.show();
-    }
-
-    private void openInputDialog() {
-        final Dialog dialogWindow = new Dialog(getActivity());
-        dialogWindow.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialogWindow.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialogWindow.setCancelable(false);
-        dialogWindow.setContentView(R.layout.dialog_window);
-
-        EditText placeEditText = (EditText) dialogWindow.findViewById(R.id.et_place);
-        EditText depthEditText = (EditText) dialogWindow.findViewById(R.id.et_depth);
-
-        Button confirmButton = (Button) dialogWindow.findViewById(R.id.btn_confirm);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                if (placeEditText.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Place name cannot be null", Toast.LENGTH_SHORT).show();
-                } else if (depthEditText.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Depth cannot be null", Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
-                        long depth = Long.valueOf(depthEditText.getText().toString());
-                        addRecordUseCase.execute(
-                                placeEditText.getText().toString(),
-                                date,
-                                startTime,
-                                endTime,
-                                depth,
-                                recordEntityStatus -> {
-                                    RecordEntity record = recordEntityStatus.getValue();
-                                    addRecordToUserUseCase.execute(user.getId(), record.getId(), fullUserEntityStatus -> {
-                                                Set<RecordEntity> records = user.getRecords();
-                                                records.add(record);
-                                                if (records.size() == 1) {
-                                                    createAdapter(records);
-                                                }
-                                                adapter.updateList(new ArrayList<>(records));
-                                            }
-                                    );
-                                }
-                        );
-                        dialogWindow.dismiss();
-                    } catch (RuntimeException e) {
-                        Toast.makeText(getContext(), "Depth must be integer", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                RecordEntity item = adapter.removeItem(position);
+                deleteRecordFromUserUseCase.execute(
+                        user.getId(),
+                        item.getId(),
+                        userEntityStatus -> {}
+                );
+                deleteRecordByIdUseCase.execute(
+                        item.getId(),
+                        voidStatus -> {}
+                );
             }
         });
 
-        dialogWindow.show();
+        itemTouchHelper.attachToRecyclerView(binding.rvRecord);
     }
 
     @Override

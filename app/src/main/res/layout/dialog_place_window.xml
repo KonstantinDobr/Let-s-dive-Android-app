@@ -20,9 +20,20 @@
 
 
     <EditText
+        android:id="@+id/et_depth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Глубина погружения"
+        android:textSize="18dp"
+        android:gravity="start"
+        android:textColorHint="@color/text"
+        android:textColor="@color/text"
+        android:layout_margin="10dp"/>
+
+    <EditText
         android:id="@+id/et_info"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:hint="Ваши заметки о погружении"
         android:textSize="18dp"
         android:gravity="start"

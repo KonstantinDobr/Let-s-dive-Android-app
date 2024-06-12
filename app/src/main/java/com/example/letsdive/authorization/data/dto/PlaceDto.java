@@ -20,6 +20,13 @@ public class PlaceDto {
     public double longitude;
 
     @Nullable
+    @SerializedName("recordId")
+    public String recordId;
+
+    @SerializedName("depth")
+    public long depth;
+
+    @Nullable
     @SerializedName("userId")
     public UserDto user;
 }

@@ -21,6 +21,8 @@ public class UpdatePlaceUseCase {
             @NonNull String information,
             double latitude,
             double longitude,
+            @NonNull String recordId,
+            long depth,
             Consumer<Status<PlaceEntity>> callback
     ) {
         repo.updatePlace(
@@ -29,6 +31,8 @@ public class UpdatePlaceUseCase {
                 information,
                 latitude,
                 longitude,
+                recordId,
+                depth,
                 callback
         );
     }

@@ -20,8 +20,8 @@ public interface PlaceApi {
     @PUT("server/v1/place/{id}")
     Call<Void> updatePlace(@Path("id") String id, @Body PlaceInitDto dto);
 
-    @GET("/server/v1/place/placeName/{placeName}")
-    Call<PlaceDto> getByPlaceName(@Path("placeName") String placeName);
+    @GET("/server/v1/place/placeName/{placeName}/{userId}")
+    Call<PlaceDto> getByPlaceName(@Path("placeName") String placeName, @Path("userId") String userId);
 
     @DELETE("/server/v1/place/{id}")
     Call<Void> deleteById(@Path("id") String id);
