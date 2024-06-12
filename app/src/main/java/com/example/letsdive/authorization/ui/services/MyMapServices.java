@@ -694,9 +694,6 @@ public class MyMapServices implements OnMapReadyCallback {
                                                                 }
                                                             }
                                                     );
-
-
-
                                                 }
                                             });
 

@@ -20,7 +20,7 @@ public class RelationshipRepositoryImpl implements RelationshipRepository {
 
     private static RelationshipRepositoryImpl INSTANCE;
 
-    private UserRelationshipApi relationshipApi = RetrofitFactory.getInstance().getUserRelationshipApi();
+    private final UserRelationshipApi relationshipApi = RetrofitFactory.getInstance().getUserRelationshipApi();
 
     private RelationshipRepositoryImpl() {}
 
@@ -40,11 +40,17 @@ public class RelationshipRepositoryImpl implements RelationshipRepository {
                 secondId
         )).enqueue(new CallToConsumer<>(
                 callback,
-                userRelationshipDto -> new UserRelationshipEntity(
-                        userRelationshipDto.id,
-                        userRelationshipDto.firstId,
-                        userRelationshipDto.secondId
-                )
+                userRelationshipDto -> {
+                    if (userRelationshipDto.id != null && userRelationshipDto.firstId != null) {
+                        return new UserRelationshipEntity(
+                                userRelationshipDto.id,
+                                userRelationshipDto.firstId,
+                                userRelationshipDto.secondId
+                        );
+                    } else {
+                        return null;
+                    }
+                }
         ));
     }
 
@@ -58,11 +64,13 @@ public class RelationshipRepositoryImpl implements RelationshipRepository {
                         return null;
                     }
                     for (UserRelationshipDto relationship : userRelationshipsDto) {
-                        result.add(new UserRelationshipEntity(
-                                relationship.id,
-                                relationship.firstId,
-                                relationship.secondId
-                        ));
+                        if (relationship.id != null && relationship.firstId != null) {
+                            result.add(new UserRelationshipEntity(
+                                    relationship.id,
+                                    relationship.firstId,
+                                    relationship.secondId
+                            ));
+                        }
                     }
                     return result;
                 }

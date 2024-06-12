@@ -34,8 +34,8 @@ import java.util.Set;
 public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
 
     private List<RecordEntity> recordEntityList;
-    private Context context;
-    private FullUserEntity user;
+    private final Context context;
+    private final FullUserEntity user;
     private String startTime;
     private String endTime;
 

@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 public class RecordRepositoryImpl implements RecordRepository {
     private static RecordRepositoryImpl INSTANCE;
-    private RecordApi recordApi = RetrofitFactory.getInstance().getRecordApi();
+    private final RecordApi recordApi = RetrofitFactory.getInstance().getRecordApi();
 
     private RecordRepositoryImpl() {}
 
@@ -48,34 +48,7 @@ public class RecordRepositoryImpl implements RecordRepository {
                 null
         )).enqueue(new CallToConsumer<>(
                 callback,
-                recordDto -> {
-                    final String resultId = recordDto.id;
-                    final String resultPlaceName = recordDto.placeName;
-                    final String resultDate = recordDto.date;
-                    final String resultStartDate = recordDto.startDate;
-                    final String resultEndDate = recordDto.endDate;
-                    final String resultInformation = recordDto.information;
-                    if (
-                            resultId != null &&
-                            resultPlaceName != null &&
-                                    resultDate != null &&
-                                    resultStartDate != null &&
-                                    resultEndDate != null &&
-                                    resultInformation != null
-                    ) {
-                        return new RecordEntity(
-                                resultId,
-                                resultPlaceName,
-                                resultDate,
-                                resultStartDate,
-                                resultEndDate,
-                                resultInformation,
-                                recordDto.depth
-                        );
-                    } else {
-                        return null;
-                    }
-                }
+                this::recordDtoToRecordEntity
         ));
     }
 
@@ -83,35 +56,7 @@ public class RecordRepositoryImpl implements RecordRepository {
     public void getRecord(@NonNull String id, @NonNull Consumer<Status<RecordEntity>> callback) {
         recordApi.getById(id).enqueue(new CallToConsumer<>(
                 callback,
-                recordDto -> {
-                    if (recordDto == null) return null;
-                    final String resultId = recordDto.id;
-                    final String resultPlaceName = recordDto.placeName;
-                    final String resultDate = recordDto.date;
-                    final String resultStartDate = recordDto.startDate;
-                    final String resultEndDate = recordDto.endDate;
-                    final String resultInformation = recordDto.information;
-                    if (
-                            resultId != null &&
-                                    resultPlaceName != null &&
-                                    resultDate != null &&
-                                    resultStartDate != null &&
-                                    resultEndDate != null &&
-                                    resultInformation != null
-                    ) {
-                        return new RecordEntity(
-                                resultId,
-                                resultPlaceName,
-                                resultDate,
-                                resultStartDate,
-                                resultEndDate,
-                                resultInformation,
-                                recordDto.depth
-                        );
-                    } else {
-                        return null;
-                    }
-                }
+                this::recordDtoToRecordEntity
         ));
     }
 
@@ -144,34 +89,37 @@ public class RecordRepositoryImpl implements RecordRepository {
                 null
         )).enqueue(new CallToConsumer<>(
                 callback,
-                recordDto -> {
-                    final String resultId = recordDto.id;
-                    final String resultPlaceName = recordDto.placeName;
-                    final String resultDate = recordDto.date;
-                    final String resultStartDate = recordDto.startDate;
-                    final String resultEndDate = recordDto.endDate;
-                    final String resultInformation = recordDto.information;
-                    if (
-                            resultId != null &&
-                                    resultPlaceName != null &&
-                                    resultDate != null &&
-                                    resultStartDate != null &&
-                                    resultEndDate != null &&
-                                    resultInformation != null
-                    ) {
-                        return new RecordEntity(
-                                resultId,
-                                resultPlaceName,
-                                resultDate,
-                                resultStartDate,
-                                resultEndDate,
-                                resultInformation,
-                                recordDto.depth
-                        );
-                    } else {
-                        return null;
-                    }
-                }
+                this::recordDtoToRecordEntity
         ));
+    }
+
+    private RecordEntity recordDtoToRecordEntity(RecordDto recordDto) {
+        if (recordDto == null) return null;
+        final String resultId = recordDto.id;
+        final String resultPlaceName = recordDto.placeName;
+        final String resultDate = recordDto.date;
+        final String resultStartDate = recordDto.startDate;
+        final String resultEndDate = recordDto.endDate;
+        final String resultInformation = recordDto.information;
+        if (
+                resultId != null &&
+                        resultPlaceName != null &&
+                        resultDate != null &&
+                        resultStartDate != null &&
+                        resultEndDate != null &&
+                        resultInformation != null
+        ) {
+            return new RecordEntity(
+                    resultId,
+                    resultPlaceName,
+                    resultDate,
+                    resultStartDate,
+                    resultEndDate,
+                    resultInformation,
+                    recordDto.depth
+            );
+        } else {
+            return null;
+        }
     }
 }

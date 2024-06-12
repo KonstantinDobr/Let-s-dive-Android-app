@@ -44,8 +44,8 @@ import java.util.Set;
 
 public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
-    private List<ItemUserEntity> entityList;
-    private Context context;
+    private final List<ItemUserEntity> entityList;
+    private final Context context;
 
     private final FullUserEntity mainUser;
 
