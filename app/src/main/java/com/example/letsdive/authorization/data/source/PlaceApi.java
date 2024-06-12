@@ -12,8 +12,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface PlaceApi {
-    @GET("/server/v1/user/place/{id}")
-    Call<PlaceDto> getById(@Path("id") String id);
     @POST("server/v1/place")
     Call<PlaceDto> createPlace(@Body PlaceInitDto dto);
 

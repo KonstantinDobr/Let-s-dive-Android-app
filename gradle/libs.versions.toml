@@ -4,11 +4,9 @@ compiler = "4.14.1"
 coordinatorlayout = "1.2.0"
 core = "1.0.2"
 coreKtx = "1.13.1"
-firebaseBom = "33.0.0"
-firebaseBomVersion = "33.0.0"
-firebaseUiStorage = "7.2.0"
 firebaseUiStorageVersion = "7.2.0"
 googleFirebaseBom = "33.1.0"
+googleServices = "4.4.2"
 lifecycleRuntimeKtx = "2.7.0"
 materialVersion = "1.3.0-alpha02"
 playServicesMaps = "18.2.0"
@@ -28,9 +26,9 @@ espressoCore = "3.5.1"
 androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "coordinatorlayout" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 core = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "core" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
 firebase-bom-v3310 = { module = "com.google.firebase:firebase-bom", version.ref = "googleFirebaseBom" }
 firebase-ui-storage = { module = "com.firebaseui:firebase-ui-storage", version.ref = "firebaseUiStorageVersion" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }

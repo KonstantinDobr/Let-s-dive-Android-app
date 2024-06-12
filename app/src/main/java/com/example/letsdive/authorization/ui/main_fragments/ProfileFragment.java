@@ -56,10 +56,6 @@ public class ProfileFragment extends Fragment {
             UserRepositoryImpl.getInstance()
     );
 
-    private final IsUserExistUseCase isUserExistUseCase = new IsUserExistUseCase(
-            UserRepositoryImpl.getInstance()
-    );
-
     public ProfileFragment(FullUserEntity user) {
         super(R.layout.fragment_profile);
         this.user = user;
@@ -141,7 +137,7 @@ public class ProfileFragment extends Fragment {
                         Toast.makeText(getActivity(), "Information cannot be null", Toast.LENGTH_SHORT).show();
                     } else if (newEmail.length() >= 40) {
                         Toast.makeText(getActivity(), "Too long email", Toast.LENGTH_SHORT).show();
-                    } else if (newInfo.length() >= 100) {
+                    } else if (newInfo.length() >= 300) {
                         Toast.makeText(getActivity(), "Too long information", Toast.LENGTH_SHORT).show();
                     } else {
                         updateUserUseCase.execute(

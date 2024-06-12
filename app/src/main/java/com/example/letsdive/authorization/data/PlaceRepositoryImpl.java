@@ -2,6 +2,7 @@ package com.example.letsdive.authorization.data;
 
 import androidx.annotation.NonNull;
 
+import com.example.letsdive.authorization.data.dto.PlaceDto;
 import com.example.letsdive.authorization.data.dto.PlaceInitDto;
 import com.example.letsdive.authorization.data.network.RetrofitFactory;
 import com.example.letsdive.authorization.data.source.PlaceApi;
@@ -16,7 +17,7 @@ public class PlaceRepositoryImpl implements PlaceRepository {
 
     private static PlaceRepositoryImpl INSTANCE;
 
-    private PlaceApi placeApi = RetrofitFactory.getInstance().getPlaceApi();
+    private final PlaceApi placeApi = RetrofitFactory.getInstance().getPlaceApi();
 
     private PlaceRepositoryImpl() {}
 
@@ -47,34 +48,7 @@ public class PlaceRepositoryImpl implements PlaceRepository {
                 null
         )).enqueue(new CallToConsumer<>(
                 callback,
-                placeDto -> {
-                    final String resultId = placeDto.id;
-                    final String resultPlaceName = placeDto.placeName;
-                    final String resultInformation = placeDto.information;
-
-                    if (
-                            resultId != null &&
-                                    resultPlaceName != null &&
-                    resultInformation != null
-                    ) {
-                        return new PlaceEntity(
-                                resultId,
-                                resultPlaceName,
-                                resultInformation,
-                                placeDto.latitude,
-                                placeDto.longitude,
-                                recordId,
-                                placeDto.depth
-                        );
-                    } else {
-                        return null;
-                    }
-                }));
-    }
-
-    @Override
-    public void getPlace(@NonNull String id, @NonNull Consumer<Status<PlaceEntity>> callback) {
-
+                this::placeDtoToPlaceEntity));
     }
 
     @Override
@@ -106,31 +80,7 @@ public class PlaceRepositoryImpl implements PlaceRepository {
     public void getByPlaceName(@NonNull String placeName, @NonNull String userId, Consumer<Status<PlaceEntity>> callback) {
         placeApi.getByPlaceName(placeName, userId).enqueue(new CallToConsumer<>(
                 callback,
-                placeDto -> {
-                    final String resultId = placeDto.id;
-                    final String resultPlaceName = placeDto.placeName;
-                    final String resultInformation = placeDto.information;
-                    final String recordId = placeDto.recordId;
-
-                    if (
-                            resultId != null &&
-                                    resultPlaceName != null &&
-                                    resultInformation != null&&
-                                    recordId != null
-                    ) {
-                        return new PlaceEntity(
-                                resultId,
-                                resultPlaceName,
-                                resultInformation,
-                                placeDto.latitude,
-                                placeDto.longitude,
-                                recordId,
-                                placeDto.depth
-                        );
-                    } else {
-                        return null;
-                    }
-                }
+                this::placeDtoToPlaceEntity
         ));
     }
 
@@ -140,5 +90,31 @@ public class PlaceRepositoryImpl implements PlaceRepository {
                 callback,
                 dto -> null
         ));
+    }
+
+    private PlaceEntity placeDtoToPlaceEntity(PlaceDto placeDto) {
+        final String resultId = placeDto.id;
+        final String resultPlaceName = placeDto.placeName;
+        final String resultInformation = placeDto.information;
+        final String recordId = placeDto.recordId;
+
+        if (
+                resultId != null &&
+                        resultPlaceName != null &&
+                        resultInformation != null&&
+                        recordId != null
+        ) {
+            return new PlaceEntity(
+                    resultId,
+                    resultPlaceName,
+                    resultInformation,
+                    placeDto.latitude,
+                    placeDto.longitude,
+                    recordId,
+                    placeDto.depth
+            );
+        } else {
+            return null;
+        }
     }
 }

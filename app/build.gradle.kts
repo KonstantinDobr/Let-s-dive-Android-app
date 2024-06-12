@@ -59,7 +59,8 @@ dependencies {
 
     annotationProcessor(libs.compiler)
     implementation(libs.firebase.ui.storage)
-    implementation(libs.firebase.bom.v3310)
+    implementation(platform(libs.firebase.bom.v3310))
+    //noinspection UseTomlInstead
     implementation("com.google.firebase:firebase-analytics")
 
     implementation(libs.play.services.maps)

@@ -18,8 +18,6 @@ public interface PlaceRepository {
             Consumer<Status<PlaceEntity>> callback
     );
 
-    void getPlace(@NonNull String id, @NonNull Consumer<Status<PlaceEntity>> callback);
-
     void updatePlace(
             @NonNull String id,
             @NonNull String placeName,

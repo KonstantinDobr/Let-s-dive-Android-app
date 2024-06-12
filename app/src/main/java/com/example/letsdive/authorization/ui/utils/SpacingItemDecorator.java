@@ -15,7 +15,7 @@ public class SpacingItemDecorator extends RecyclerView.ItemDecoration {
     public SpacingItemDecorator(int verticalSpaceHeight, int leftSpaceHeight, int rightSpaceHeight) {
         this.verticalSpaceHeight = verticalSpaceHeight;
         this.leftSpaceHeight = leftSpaceHeight;
-        this.rightSpaceHeight = leftSpaceHeight;
+        this.rightSpaceHeight = rightSpaceHeight;
     }
 
     @Override
